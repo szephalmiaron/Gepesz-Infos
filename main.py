@@ -1,17 +1,16 @@
 import pygame
+from settings import *
 
 pygame.init()
 
-WIDTH: int = 1900
-HEIGHT: int = 1000
 BACKGROUND = (135, 206, 235)
 SPEED = 5
 
 clock: pygame.time.Clock = pygame.time.Clock()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-gepesz = pygame.image.load("graphics/characters/gepesz/kacsa.png").convert_alpha()
+gepesz = pygame.image.load("graphics/characters/gepesz/frame_00_delay-0.05s.gif").convert_alpha()
 gepesz_rect = gepesz.get_rect(center=(WIDTH / 2, HEIGHT / 2))
-infos = pygame.image.load("graphics/characters/infos/goose_1.png").convert_alpha()
+infos = pygame.image.load("graphics/characters/infos/run/run_000.png").convert_alpha()
 infos_rect = infos.get_rect(center=(WIDTH / 2, HEIGHT / 2))
 
 
@@ -27,7 +26,7 @@ while running:
     # irányítás gépész
     keys = pygame.key.get_pressed()
     if keys[pygame.K_RIGHT] and gepesz_rect.right <= WIDTH:
-        gepesz = pygame.image.load("graphics/characters/gepesz/kacsa.png")
+        gepesz = pygame.image.load("graphics/characters/gepesz/frame_00_delay-0.05s.gif")
         gepesz_rect.x += SPEED
     elif keys[pygame.K_LEFT] and gepesz_rect.left >= 0:
         gepesz_rect.x -= SPEED
@@ -38,7 +37,7 @@ while running:
 
     # irányítás infos
     if keys[pygame.K_d] and infos_rect.right <= WIDTH:
-        infos = pygame.image.load("graphics/characters/infos/goose_1.png")
+        infos = pygame.image.load("graphics/characters/infos/run/run_000.png")
         infos_rect.x += SPEED
     elif keys[pygame.K_a] and infos_rect.left >= 0:
         infos_rect.x -= SPEED
@@ -47,8 +46,8 @@ while running:
     elif keys[pygame.K_s] and infos_rect.bottom <= HEIGHT:
         infos_rect.y+= SPEED
 
-    screen.blit(infos, infos_rect)
     screen.blit(gepesz, gepesz_rect)
+    screen.blit(infos, infos_rect)
     pygame.display.update()
     clock.tick(60)
 
