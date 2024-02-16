@@ -1,1 +1,2 @@
 # Pygame
+# A fireboy és watergirl játékhoz hasonló, 2D-s platformer puzzle játék. A két játékosan el kell jutnia a pálya végére, miközben együtt kell működniük. Az infóst a WASD gombokkal lehet irányítani, a gépészt pedig a nyilakkal.  Az infós nem érhet vízhez a gépész pedig 
