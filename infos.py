@@ -1,11 +1,11 @@
 from typing import List
 import pygame
 
-class Gepesz(pygame.sprite.Sprite):
+class Infos(pygame.sprite.Sprite):
     def __init__(self, pos: tuple[int, int]) -> None:
         super().__init__()
 
-        self.image = pygame.image.load("graphics/temp/test_gepesz.png").convert_alpha()
+        self.image = pygame.image.load("graphics/temp/test_character.png").convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.frame_index: float = 0
         self.direction = pygame.math.Vector2(0, 0)
@@ -21,16 +21,16 @@ class Gepesz(pygame.sprite.Sprite):
     def get_input(self) -> None:
         keys: List[bool] = pygame.key.get_pressed()
 
-        if keys[pygame.K_d]:
+        if keys[pygame.K_RIGHT]:
             self.direction.x = 1
             self.facing_left = False
-        elif keys[pygame.K_a]:
+        elif keys[pygame.K_LEFT]:
             self.direction.x = -1
             self.facing_left = True
         else:
             self.direction.x = 0
 
-        if keys[pygame.K_w] and self.on_ground:
+        if keys[pygame.K_UP] and self.on_ground:
             self.jump()
 
     def apply_gravity(self) -> None:
