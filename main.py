@@ -7,7 +7,7 @@ from infos import Infos
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
-infos = Infos((WIDTH / 2, HEIGHT / 2 - 50))  # Adjust initial position
+infos = Infos((WIDTH / 2, HEIGHT / 2 - 50))  
 gepesz = Gepesz((WIDTH / 2, HEIGHT / 2))
 
 BACKGROUND = (135, 206, 235)
@@ -25,7 +25,9 @@ while RUNNING:
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
             RUNNING = False
 
-    infos.update()  # Update the Infos character
+    print(level.check_button())
+
+    infos.update()  
     level.run()
     pygame.display.update()
     clock.tick(60)
