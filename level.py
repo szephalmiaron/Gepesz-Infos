@@ -5,9 +5,8 @@ from player import Gepesz
 from infos import Infos
 
 class Level:
-    BUTTON_POS_OFFSET = 23  # Offset from the y variable for the button to spawn
-    BUTTON_SPEED = 3  # Speed at which the button moves
-
+    button_pos_offset = 23 
+    BUTTON_SPEED = 3 
     def __init__(self, level_data, surface, infos, gepesz):
         self.display_surface = surface
         self.tiles_dict = {}
@@ -19,10 +18,15 @@ class Level:
 
         self.setup_level(level_data)
 
+   
+
     def setup_level(self, layout):
         self.tiles = pygame.sprite.Group()
         row_index = 0
         
+
+
+
         for row_index, row in enumerate(layout):
             for coll_index, cell in enumerate(row):
                 if cell == "S":
@@ -52,17 +56,14 @@ class Level:
                     self.tiles.add(tile_X)    
                 elif cell == "B":
                     x = coll_index * tile_size
-                    y = row_index * tile_size + 23
+                    y = row_index * tile_size + self.button_pos_offset
                     self.button = Button((x, y))
                     self.tiles.add(self.button)                      
-    
-    def check_button(self) -> bool:
-        for tile in self.tiles.sprites():
-            if isinstance(tile, Button):
-                player_bottom_center = self.gepesz.rect.bottomleft[0] + self.gepesz.rect.width // 2, self.gepesz.rect.bottom
-                if tile.rect.collidepoint(player_bottom_center):
-                    return True
-        return False
+
+
+
+
+
 
     def run(self):
         self.players.update()
@@ -78,6 +79,10 @@ class Level:
             for sprite in self.tiles.sprites():
                 if isinstance(sprite, Water):
                     continue
+                if isinstance(sprite, Button):
+                    if sprite.rect.colliderect(player.rect):
+                        self.button_pos_offset = 50
+                        print(self.button_pos_offset)
                 if sprite.rect.colliderect(player.rect):
                     if player.direction.x < 0:
                         player.rect.left = sprite.rect.right
@@ -91,6 +96,10 @@ class Level:
             for sprite in self.tiles.sprites():
                 if isinstance(sprite, Water):
                     continue
+                if isinstance(sprite, Button):
+                    if sprite.rect.colliderect(player.rect):
+                        self.button_pos_offset = 50
+                        print(self.button_pos_offset)
                 if sprite.rect.colliderect(player.rect):
                     if player.direction.y > 0:
                         player.rect.bottom = sprite.rect.top
