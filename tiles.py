@@ -21,3 +21,4 @@ class Button(pygame.sprite.Sprite):
         super().__init__()
         self.image = pygame.image.load("graphics/temp/button.png")
         self.rect = self.image.get_rect(topleft = pos)
+        self.direction = pygame.math.Vector2(0, 0)
