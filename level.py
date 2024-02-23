@@ -5,8 +5,8 @@ from player import Gepesz
 from infos import Infos
 
 class Level:
-    button_pos_offset = 23 
-    BUTTON_SPEED = 3 
+    button_pos_offset = 23
+    BUTTON_SPEED = 3
     def __init__(self, level_data, surface, infos, gepesz):
         self.display_surface = surface
         self.tiles_dict = {}
@@ -81,8 +81,8 @@ class Level:
                     continue
                 if isinstance(sprite, Button):
                     if sprite.rect.colliderect(player.rect):
-                        self.button_pos_offset = 50
-                        print(self.button_pos_offset)
+                        self.button.direction.y = 1
+                        self.button.rect.y += self.button.direction.y
                 if sprite.rect.colliderect(player.rect):
                     if player.direction.x < 0:
                         player.rect.left = sprite.rect.right
@@ -98,8 +98,8 @@ class Level:
                     continue
                 if isinstance(sprite, Button):
                     if sprite.rect.colliderect(player.rect):
-                        self.button_pos_offset = 50
-                        print(self.button_pos_offset)
+                        self.button.direction.y = 1
+                        self.button.rect.y += self.button.direction.y
                 if sprite.rect.colliderect(player.rect):
                     if player.direction.y > 0:
                         player.rect.bottom = sprite.rect.top
