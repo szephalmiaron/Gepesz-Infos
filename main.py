@@ -25,8 +25,6 @@ while RUNNING:
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
             RUNNING = False
 
-    print(level.check_button())
-
     infos.update()  
     level.run()
     pygame.display.update()
