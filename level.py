@@ -8,7 +8,8 @@ class Level:
     button_pos_offset = 23
     BUTTON_SPEED = 3
     button_original_pos = 0
-    button_onoff: bool = False
+    button_onoff_infos: bool = False
+    button_onoff_gepesz: bool = False
     def __init__(self, level_data, surface, infos, gepesz):
         self.display_surface = surface
         self.tiles_dict = {}
@@ -54,8 +55,8 @@ class Level:
                 elif cell == "L":
                     x = coll_index * tile_size
                     y = row_index * tile_size
-                    tile_X = Lift((x, y))
-                    self.tiles.add(tile_X)    
+                    self.lift = Lift((x, y))
+                    self.tiles.add(self.lift)    
                 elif cell == "B":
                     x = coll_index * tile_size
                     y = row_index * tile_size + self.button_pos_offset
@@ -64,9 +65,11 @@ class Level:
                     self.button_original_pos = self.button.rect.y
 
 
+    def lift_up(self):
+        self.lift.rect.y += 1
 
-
-
+    def lift_down(self):
+        self.lift.rect.y -= 1
 
     def run(self):
         self.players.update()
@@ -83,10 +86,7 @@ class Level:
                 if isinstance(sprite, Water):
                     continue
                 if isinstance(sprite, Button):
-                    if sprite.rect.colliderect(player.rect):
-                        self.button_onoff = True
-                    else:
-                        self.button_onoff = False
+                    pass
                 if sprite.rect.colliderect(player.rect):
                     if player.direction.x < 0:
                         player.rect.left = sprite.rect.right
@@ -102,7 +102,16 @@ class Level:
                     continue
                 if isinstance(sprite, Button):
                     if sprite.rect.colliderect(player.rect):
-                        self.button_onoff = True
+                        if player == self.infos:
+                            self.button_onoff_infos = True
+                        if player == self.gepesz:
+                            self.button_onoff_gepesz = True
+                    else:
+                        if player == self.infos:
+                            self.button_onoff_infos = False
+                        if player == self.gepesz:
+                            self.button_onoff_gepesz = False  
+
                 if sprite.rect.colliderect(player.rect):
                     if player.direction.y > 0:
                         player.rect.bottom = sprite.rect.top
@@ -119,8 +128,10 @@ class Level:
             if player.on_ceiling and player.direction.y > 0:
                 player.on_ceiling = False
 
-        if self.button_onoff == True:
-            self.button.rect.y += 1
+        if self.button_onoff_infos == True or self.button_onoff_gepesz == True:
+            self.button.rect.y += 1.5
+            self.lift_up()
         else:
+            self.lift_down()
             if self.button_original_pos <= self.button.rect.y:
                 self.button.rect.y += -1
