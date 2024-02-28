@@ -7,6 +7,8 @@ from infos import Infos
 class Level:
     button_pos_offset = 23
     BUTTON_SPEED = 3
+    button_original_pos = 0
+    button_onoff: bool = False
     def __init__(self, level_data, surface, infos, gepesz):
         self.display_surface = surface
         self.tiles_dict = {}
@@ -59,6 +61,7 @@ class Level:
                     y = row_index * tile_size + self.button_pos_offset
                     self.button = Button((x, y))
                     self.tiles.add(self.button)                      
+                    self.button_original_pos = self.button.rect.y
 
 
 
@@ -81,8 +84,9 @@ class Level:
                     continue
                 if isinstance(sprite, Button):
                     if sprite.rect.colliderect(player.rect):
-                        self.button.direction.y = 1
-                        self.button.rect.y += self.button.direction.y
+                        self.button_onoff = True
+                    else:
+                        self.button_onoff = False
                 if sprite.rect.colliderect(player.rect):
                     if player.direction.x < 0:
                         player.rect.left = sprite.rect.right
@@ -98,8 +102,7 @@ class Level:
                     continue
                 if isinstance(sprite, Button):
                     if sprite.rect.colliderect(player.rect):
-                        self.button.direction.y = 1
-                        self.button.rect.y += self.button.direction.y
+                        self.button_onoff = True
                 if sprite.rect.colliderect(player.rect):
                     if player.direction.y > 0:
                         player.rect.bottom = sprite.rect.top
@@ -115,3 +118,9 @@ class Level:
                 player.on_ground = False
             if player.on_ceiling and player.direction.y > 0:
                 player.on_ceiling = False
+
+        if self.button_onoff == True:
+            self.button.rect.y += 1
+        else:
+            if self.button_original_pos <= self.button.rect.y:
+                self.button.rect.y += -1
