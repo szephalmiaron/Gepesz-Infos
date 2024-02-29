@@ -1,5 +1,5 @@
 import pygame
-from tiles import Tile, Water, Lift, Button
+from tiles import Tile, Water, Lift, Button, Switch
 from settings import tile_size
 from player import Gepesz
 from infos import Infos
@@ -7,9 +7,12 @@ from infos import Infos
 class Level:
     button_pos_offset = 23
     BUTTON_SPEED = 3
-    button_original_pos = 0
+    button_original_pos: int = 0
     button_onoff_infos: bool = False
     button_onoff_gepesz: bool = False
+    full_lift: list[Lift] = []
+    lift_original: tuple = 0, 0
+    switch_on: bool = False
     def __init__(self, level_data, surface, infos, gepesz):
         self.display_surface = surface
         self.tiles_dict = {}
@@ -56,20 +59,32 @@ class Level:
                     x = coll_index * tile_size
                     y = row_index * tile_size
                     self.lift = Lift((x, y))
-                    self.tiles.add(self.lift)    
+                    self.tiles.add(self.lift)
+                    self.full_lift.append(self.lift)
+                    self.lift_original = self.lift.rect.y
                 elif cell == "B":
                     x = coll_index * tile_size
                     y = row_index * tile_size + self.button_pos_offset
                     self.button = Button((x, y))
                     self.tiles.add(self.button)                      
                     self.button_original_pos = self.button.rect.y
-
+                elif cell == "K":
+                    x = coll_index * tile_size
+                    y = row_index * tile_size
+                    self.switch = Switch((x, y))
+                    self.tiles.add(self.switch)               
 
     def lift_up(self):
-        self.lift.rect.y += 1
+        for i in self.full_lift:
+            if i.rect.y > 650:
+                i.rect.y -= 4
 
     def lift_down(self):
-        self.lift.rect.y -= 1
+        for i in self.full_lift:
+                if self.lift_original > i.rect.y:
+                    i.rect.y += 1.5
+
+    
 
     def run(self):
         self.players.update()
@@ -77,6 +92,8 @@ class Level:
         self.horizontal_collision()
         self.vertical_collision()
         self.tiles.draw(self.display_surface)
+
+        print(self.switch_on)
 
     def horizontal_collision(self):
         for player in self.players:
@@ -111,6 +128,12 @@ class Level:
                             self.button_onoff_infos = False
                         if player == self.gepesz:
                             self.button_onoff_gepesz = False  
+                if isinstance(sprite, Switch):
+                    if sprite.rect.colliderect(player.rect):
+                        if self.switch_on == False:
+                            self.switch_on = True
+                        elif self.switch_on == True:
+                            self.switch_on = False
 
                 if sprite.rect.colliderect(player.rect):
                     if player.direction.y > 0:
@@ -128,10 +151,11 @@ class Level:
             if player.on_ceiling and player.direction.y > 0:
                 player.on_ceiling = False
 
-        if self.button_onoff_infos == True or self.button_onoff_gepesz == True:
+        if self.button_onoff_infos == True or self.button_onoff_gepesz == True or self.switch_on == True:
             self.button.rect.y += 1.5
             self.lift_up()
         else:
-            self.lift_down()
             if self.button_original_pos <= self.button.rect.y:
-                self.button.rect.y += -1
+                self.button.rect.y -= 1
+            else:
+                self.lift_down()

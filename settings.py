@@ -20,14 +20,14 @@ level_map: list[str] = [
 "S                                                          S",
 "S                                                          S",
 "S                                                          S",
-"S                                                          S",
+"S                                      K                   S",
 "SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSWWSSSSSSSSSSSSS          S",
 "SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS          S",
 "S                                                          S",
 "S                                                          S",
 "S                                                          S",
 "S    I  G                              B                   S",
-"SSSSSSSSSSSSSSSSSSSSSSWWSSSSSWWSSSSSSSSSSSSSSSSSSSSSLLLSSSS",
+"SSSSSSSSSSSSSSSSSSSSSSWWSSSSSWWSSSSSSSSSSSSSSSSSSSSSLLLSSSSS",
 "SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS",
 ]
 
