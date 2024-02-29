@@ -10,6 +10,7 @@ class Level:
     button_original_pos: int = 0
     button_onoff_infos: bool = False
     button_onoff_gepesz: bool = False
+    switch_touch: bool = False
     full_lift: list[Lift] = []
     lift_original: tuple = 0, 0
     switch_on: bool = False
@@ -127,13 +128,26 @@ class Level:
                         if player == self.infos:
                             self.button_onoff_infos = False
                         if player == self.gepesz:
-                            self.button_onoff_gepesz = False  
+                            self.button_onoff_gepesz = False                  
                 if isinstance(sprite, Switch):
-                    if sprite.rect.colliderect(player.rect):
-                        if self.switch_on == False:
-                            self.switch_on = True
-                        elif self.switch_on == True:
-                            self.switch_on = False
+                    if sprite.rect.colliderect(player.rect) and player == self.gepesz:
+                        if self.switch_touch is False:
+                            if self.switch_on == False:
+                                self.switch_on = True
+                                self.switch_touch = True
+                            elif self.switch_on == True:
+                                self.switch_on = False
+                                self.switch_touch = True
+                    elif sprite.rect.colliderect(player.rect) and player == self.infos:
+                        if self.switch_touch is False:
+                            if self.switch_on == False:
+                                self.switch_on = True
+                                self.switch_touch = True
+                            elif self.switch_on == True:
+                                self.switch_on = False
+                                self.switch_touch = True
+                    else: self.switch_touch = False    
+                
 
                 if sprite.rect.colliderect(player.rect):
                     if player.direction.y > 0:
@@ -152,7 +166,8 @@ class Level:
                 player.on_ceiling = False
 
         if self.button_onoff_infos == True or self.button_onoff_gepesz == True or self.switch_on == True:
-            self.button.rect.y += 1.5
+            if self.button_onoff_infos == True or self.button_onoff_gepesz == True:
+                self.button.rect.y += 1.5
             self.lift_up()
         else:
             if self.button_original_pos <= self.button.rect.y:
