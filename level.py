@@ -10,10 +10,10 @@ class Level:
     button_original_pos: int = 0
     button_onoff_infos: bool = False
     button_onoff_gepesz: bool = False
-    switch_touch: bool = False
     full_lift: list[Lift] = []
     lift_original: tuple = 0, 0
     switch_on: bool = False
+    switch_pic: str = "graphics/temp/switch_off.png"
     def __init__(self, level_data, surface, infos, gepesz):
         self.display_surface = surface
         self.tiles_dict = {}
@@ -25,12 +25,11 @@ class Level:
 
         self.setup_level(level_data)
 
-   
 
     def setup_level(self, layout):
         self.tiles = pygame.sprite.Group()
         row_index = 0
-        
+
 
 
 
@@ -82,8 +81,8 @@ class Level:
 
     def lift_down(self):
         for i in self.full_lift:
-                if self.lift_original > i.rect.y:
-                    i.rect.y += 1.5
+            if self.lift_original > i.rect.y:
+                i.rect.y += 1.5
 
     
 
@@ -92,8 +91,7 @@ class Level:
         self.players.draw(self.display_surface)
         self.horizontal_collision()
         self.vertical_collision()
-        self.tiles.draw(self.display_surface)
-
+        self.tiles.draw(self.display_surface)    
         print(self.switch_on)
 
     def horizontal_collision(self):
@@ -105,6 +103,17 @@ class Level:
                     continue
                 if isinstance(sprite, Button):
                     pass
+                if isinstance(sprite, Switch):
+                    if sprite.rect.colliderect(player.rect):
+                        if player.direction.x > 0 and player.rect.left < sprite.rect.left:
+                            self.switch_on = True
+                            self.switch_pic = "graphics/temp/switch_on.png"
+                        elif player.direction.x < 0 and player.rect.right > sprite.rect.right:
+                            self.switch_on = False
+                            self.switch_pic = "graphics/temp/switch_off.png"
+                        else:
+                            self.switch_on = False
+                            self.switch_pic = "graphics/temp/switch_off.png"
                 if sprite.rect.colliderect(player.rect):
                     if player.direction.x < 0:
                         player.rect.left = sprite.rect.right
@@ -118,6 +127,7 @@ class Level:
             for sprite in self.tiles.sprites():
                 if isinstance(sprite, Water):
                     continue
+
                 if isinstance(sprite, Button):
                     if sprite.rect.colliderect(player.rect):
                         if player == self.infos:
@@ -128,26 +138,7 @@ class Level:
                         if player == self.infos:
                             self.button_onoff_infos = False
                         if player == self.gepesz:
-                            self.button_onoff_gepesz = False                  
-                if isinstance(sprite, Switch):
-                    if sprite.rect.colliderect(player.rect) and player == self.gepesz:
-                        if self.switch_touch is False:
-                            if self.switch_on == False:
-                                self.switch_on = True
-                                self.switch_touch = True
-                            elif self.switch_on == True:
-                                self.switch_on = False
-                                self.switch_touch = True
-                    elif sprite.rect.colliderect(player.rect) and player == self.infos:
-                        if self.switch_touch is False:
-                            if self.switch_on == False:
-                                self.switch_on = True
-                                self.switch_touch = True
-                            elif self.switch_on == True:
-                                self.switch_on = False
-                                self.switch_touch = True
-                    else: self.switch_touch = False    
-                
+                            self.button_onoff_gepesz = False
 
                 if sprite.rect.colliderect(player.rect):
                     if player.direction.y > 0:

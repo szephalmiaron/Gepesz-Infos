@@ -5,7 +5,7 @@ class Infos(pygame.sprite.Sprite):
     def __init__(self, pos: tuple[int, int]) -> None:
         super().__init__()
 
-        self.image = pygame.image.load("graphics/temp/test_character.png").convert_alpha()
+        self.image = pygame.image.load("graphics/temp/infos/infosanimacio1.png").convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.frame_index: float = 0
         self.direction = pygame.math.Vector2(0, 0)
