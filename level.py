@@ -92,7 +92,6 @@ class Level:
         self.horizontal_collision()
         self.vertical_collision()
         self.tiles.draw(self.display_surface)    
-        print(self.switch_on)
 
     def horizontal_collision(self):
         for player in self.players:
