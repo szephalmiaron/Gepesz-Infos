@@ -155,10 +155,14 @@ class Level:
             if player.on_ceiling and player.direction.y > 0:
                 player.on_ceiling = False
 
-        if self.button_onoff_infos == True or self.button_onoff_gepesz == True or self.switch_on == True:
-            if self.button_onoff_infos == True or self.button_onoff_gepesz == True:
+        if self.button_onoff_infos is True or self.button_onoff_gepesz is True:
+            if self.button_onoff_infos is True or self.button_onoff_gepesz is True:
                 self.button.rect.y += 1.5
             self.lift_up()
+        elif self.switch_on is True:
+            self.lift_up()
+            if self.button_original_pos <= self.button.rect.y:
+                self.button.rect.y -= 1
         else:
             if self.button_original_pos <= self.button.rect.y:
                 self.button.rect.y -= 1
