@@ -71,7 +71,7 @@ class Level:
                 elif cell == "K":
                     x = coll_index * tile_size
                     y = row_index * tile_size
-                    self.switch = Switch((x, y))
+                    self.switch = Switch((x, y), self.switch_pic)
                     self.tiles.add(self.switch)               
 
     def lift_up(self):
@@ -107,13 +107,13 @@ class Level:
                     if sprite.rect.colliderect(player.rect):
                         if player.direction.x > 0 and player.rect.left < sprite.rect.left:
                             self.switch_on = True
-                            self.switch_pic = "graphics/temp/switch_on.png"
                         elif player.direction.x < 0 and player.rect.right > sprite.rect.right:
                             self.switch_on = False
                             self.switch_pic = "graphics/temp/switch_off.png"
                         else:
                             self.switch_on = False
-                            self.switch_pic = "graphics/temp/switch_off.png"
+                    sprite.update_image(self.switch_on)
+
                 if sprite.rect.colliderect(player.rect):
                     if player.direction.x < 0:
                         player.rect.left = sprite.rect.right
