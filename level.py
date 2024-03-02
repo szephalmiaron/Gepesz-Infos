@@ -112,6 +112,12 @@ class Level:
                         else:
                             self.switch_on = False
                     sprite.update_image(self.switch_on)
+                for other_player in self.players:
+                    if other_player != player and player.rect.colliderect(other_player.rect):
+                        if player.direction.x > 0:
+                            player.rect.right = other_player.rect.left
+                        elif player.direction.x < 0:
+                            player.rect.left = other_player.rect.right
 
                 if sprite.rect.colliderect(player.rect):
                     if player.direction.x < 0:
@@ -148,6 +154,17 @@ class Level:
                         player.rect.top = sprite.rect.bottom
                         player.direction.y = 0
                         player.on_ceiling = True
+            for other_player in self.players:
+                if other_player != player and player.rect.colliderect(other_player.rect):
+                    if player.direction.y > 0:
+                        player.rect.bottom = other_player.rect.top
+                        player.direction.y = 0
+                        player.on_ground = True
+                    elif player.direction.y < 0:
+                        player.rect.top = other_player.rect.bottom
+                        player.direction.y = 0
+                        player.on_ceiling = True
+
         
         for player in self.players:
             if player.on_ground and player.direction.y < 0 or player.direction.y > 1:
