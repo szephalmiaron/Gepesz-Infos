@@ -112,6 +112,12 @@ class Level:
                         else:
                             self.switch_on = False
                     sprite.update_image(self.switch_on)
+                for other_player in self.players:
+                    if other_player != player and player.rect.colliderect(other_player.rect):
+                        if player.direction.x > 0:
+                            player.rect.right = other_player.rect.left
+                        elif player.direction.x < 0:
+                            player.rect.left = other_player.rect.right
 
                 if sprite.rect.colliderect(player.rect):
                     if player.direction.x < 0:
@@ -148,6 +154,17 @@ class Level:
                         player.rect.top = sprite.rect.bottom
                         player.direction.y = 0
                         player.on_ceiling = True
+            for other_player in self.players:
+                if other_player != player and player.rect.colliderect(other_player.rect):
+                    if player.direction.y > 0:
+                        player.rect.bottom = other_player.rect.top
+                        player.direction.y = 0
+                        player.on_ground = True
+                    elif player.direction.y < 0:
+                        player.rect.top = other_player.rect.bottom
+                        player.direction.y = 0
+                        player.on_ceiling = True
+
         
         for player in self.players:
             if player.on_ground and player.direction.y < 0 or player.direction.y > 1:
@@ -155,10 +172,14 @@ class Level:
             if player.on_ceiling and player.direction.y > 0:
                 player.on_ceiling = False
 
-        if self.button_onoff_infos == True or self.button_onoff_gepesz == True or self.switch_on == True:
-            if self.button_onoff_infos == True or self.button_onoff_gepesz == True:
+        if self.button_onoff_infos is True or self.button_onoff_gepesz is True:
+            if self.button_onoff_infos is True or self.button_onoff_gepesz is True:
                 self.button.rect.y += 1.5
             self.lift_up()
+        elif self.switch_on is True:
+            self.lift_up()
+            if self.button_original_pos <= self.button.rect.y:
+                self.button.rect.y -= 1
         else:
             if self.button_original_pos <= self.button.rect.y:
                 self.button.rect.y -= 1
