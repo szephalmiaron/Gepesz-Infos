@@ -1,8 +1,9 @@
 import pygame
-from tiles import Tile, Water, Lift, Button, Switch
+from tiles import Tile, Water, Lift, Button, Switch, Barrier
 from settings import tile_size
 from player import Gepesz
 from infos import Infos
+from enemy import Cigany
 
 class Level:
     button_pos_offset = 23
@@ -14,13 +15,14 @@ class Level:
     lift_original: tuple = 0, 0
     switch_on: bool = False
     switch_pic: str = "graphics/temp/switch_off.png"
-    def __init__(self, level_data, surface, infos, gepesz):
+    def __init__(self, level_data, surface, infos, gepesz, cigany):
         self.display_surface = surface
         self.tiles_dict = {}
         self.players = pygame.sprite.Group()  
         self.infos = infos  
         self.gepesz = gepesz  
-
+        self.enemies = pygame.sprite.Group()
+        self.cigany = cigany
 
 
         self.setup_level(level_data)
@@ -49,7 +51,12 @@ class Level:
                     x = coll_index * tile_size
                     y = row_index * tile_size
                     self.gepesz.rect.topleft = (x, y)  
-                    self.players.add(self.gepesz)  
+                    self.players.add(self.gepesz)
+                elif cell == "E":
+                    x = coll_index * tile_size
+                    y = row_index * tile_size - 33
+                    self.cigany.rect.topleft = (x, y)
+                    self.enemies.add(self.cigany)  
                 elif cell == "W":
                     x = coll_index * tile_size
                     y = row_index * tile_size
@@ -72,7 +79,12 @@ class Level:
                     x = coll_index * tile_size
                     y = row_index * tile_size
                     self.switch = Switch((x, y), self.switch_pic)
-                    self.tiles.add(self.switch)               
+                    self.tiles.add(self.switch)  
+                elif cell == "A":
+                    x = coll_index * tile_size
+                    y = row_index * tile_size
+                    self.barrier = Barrier((x, y))
+                    self.tiles.add(self.barrier)
 
     def lift_up(self):
         for i in self.full_lift:
@@ -89,9 +101,33 @@ class Level:
     def run(self):
         self.players.update()
         self.players.draw(self.display_surface)
+        self.enemies.draw(self.display_surface)
         self.horizontal_collision()
         self.vertical_collision()
-        self.tiles.draw(self.display_surface)    
+        self.tiles.draw(self.display_surface)
+        self.enemy_movement()    
+
+    def enemy_movement(self):
+        for enemy in self.enemies:
+            if enemy.facing_left:
+                enemy.rect.x -= enemy.speed
+            else:
+                enemy.rect.x += enemy.speed
+            for sprite in self.tiles.sprites():
+                if isinstance(sprite, Barrier):
+                    if sprite.rect.colliderect(enemy.rect):
+                        if enemy.facing_left:
+                            enemy.facing_left = False
+                        else:
+                            enemy.facing_left = True
+                if isinstance(sprite,Tile):
+                    if sprite.rect.colliderect(enemy.rect):
+                        if enemy.facing_left:
+                            enemy.facing_left = False
+                        else:
+                            enemy.facing_left = True
+
+
 
     def horizontal_collision(self):
         for player in self.players:
@@ -100,8 +136,8 @@ class Level:
             for sprite in self.tiles.sprites():
                 if isinstance(sprite, Water):
                     continue
-                if isinstance(sprite, Button):
-                    pass
+                if isinstance(sprite, Barrier):
+                    continue
                 if isinstance(sprite, Switch):
                     if sprite.rect.colliderect(player.rect):
                         if player.direction.x > 0 and player.rect.left < sprite.rect.left:
@@ -130,9 +166,10 @@ class Level:
             player.apply_gravity()
 
             for sprite in self.tiles.sprites():
+                if isinstance(sprite, Barrier):
+                    continue
                 if isinstance(sprite, Water):
                     continue
-
                 if isinstance(sprite, Button):
                     if sprite.rect.colliderect(player.rect):
                         if player == self.infos:
@@ -164,7 +201,9 @@ class Level:
                         player.rect.top = other_player.rect.bottom
                         player.direction.y = 0
                         player.on_ceiling = True
-
+            for enemy in self.enemies:
+                if enemy.rect.colliderect(player.rect):
+                    enemy.rect.x = 10000
         
         for player in self.players:
             if player.on_ground and player.direction.y < 0 or player.direction.y > 1:

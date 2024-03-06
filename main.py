@@ -3,18 +3,21 @@ from level import Level
 from settings import WIDTH, HEIGHT, level_map
 from player import Gepesz
 from infos import Infos
+from enemy import Cigany
+
 
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 infos = Infos((WIDTH / 2, HEIGHT / 2 - 50))  
 gepesz = Gepesz((WIDTH / 2, HEIGHT / 2))
+cigany = Cigany((WIDTH / 2, HEIGHT / 2))
 
 BACKGROUND = (135, 206, 235)
 SPEED = 5
 
 clock = pygame.time.Clock()
-level = Level(level_map, screen, infos, gepesz)
+level = Level(level_map, screen, infos, gepesz, cigany)
 
 RUNNING = True
 while RUNNING:

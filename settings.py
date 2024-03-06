@@ -20,7 +20,7 @@ level_map: list[str] = [
 "S                                                          S",
 "S                                                          S",
 "S                                                          S",
-"S                                      K                   S",
+"S       E                 A            K                   S",
 "SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSWWSSSSSSSSSSSSS          S",
 "SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS          S",
 "S                                                          S",
@@ -39,5 +39,7 @@ level_map: list[str] = [
 #W: water
 #L: lift
 #B: button
+#E: enemy
+#A: barrier
 tile_size: int = 32
 WIDTH, HEIGHT = 1900, len(level_map) * tile_size

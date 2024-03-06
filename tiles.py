@@ -21,6 +21,12 @@ class Button(pygame.sprite.Sprite):
         self.image = pygame.image.load("graphics/temp/button.png")
         self.rect = self.image.get_rect(topleft = pos)
         self.direction = pygame.math.Vector2(0, 0)
+class Barrier(pygame.sprite.Sprite):
+    def __init__(self, pos: tuple[int, int]):
+        super().__init__()
+        self.image = pygame.image.load("graphics/map/blocks/barrier.png")
+        self.rect = self.image.get_rect(topleft = pos)
+        self.direction = pygame.math.Vector2(0, 0)
 class Switch(pygame.sprite.Sprite):
     def __init__(self, pos: tuple[int, int], switch_pic: str):
         super().__init__()
