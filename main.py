@@ -20,16 +20,20 @@ clock = pygame.time.Clock()
 level = Level(level_map, screen, infos, gepesz, cigany)
 
 RUNNING = True
-while RUNNING:
+paused: bool = False
+alive: bool = True
+while RUNNING and alive:
     screen.fill(BACKGROUND)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             RUNNING = False
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-            RUNNING = False
+            level.menu(screen)
+            paused = True
 
-    infos.update()  
-    level.run()
+    if not paused:    
+        infos.update()  
+        alive = level.run()
     pygame.display.update()
     clock.tick(60)
 

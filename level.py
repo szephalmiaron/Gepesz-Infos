@@ -14,6 +14,8 @@ class Level:
     full_lift: list[Lift] = []
     lift_original: tuple = 0, 0
     switch_on: bool = False
+    infos_alive: bool = True
+    gepesz_alive: bool = True
     switch_pic: str = "graphics/temp/switch_off.png"
     def __init__(self, level_data, surface, infos, gepesz, cigany):
         self.display_surface = surface
@@ -105,7 +107,14 @@ class Level:
         self.horizontal_collision()
         self.vertical_collision()
         self.tiles.draw(self.display_surface)
-        self.enemy_movement()    
+        self.enemy_movement()
+        if self.infos_alive and self.gepesz_alive:
+            return True
+        else:
+            return False
+        
+    def menu(self, surface):
+        surface.fill((111, 152, 87))
 
     def enemy_movement(self):
         for enemy in self.enemies:
@@ -154,6 +163,12 @@ class Level:
                             player.rect.right = other_player.rect.left
                         elif player.direction.x < 0:
                             player.rect.left = other_player.rect.right
+                for enemy in self.enemies:
+                    if enemy.rect.colliderect(player.rect):
+                        if player == self.infos:
+                            self.infos_alive = False
+                        elif player == self.gepesz:
+                            self.gepesz_alive = False
 
                 if sprite.rect.colliderect(player.rect):
                     if player.direction.x < 0:
@@ -203,7 +218,7 @@ class Level:
                         player.on_ceiling = True
             for enemy in self.enemies:
                 if enemy.rect.colliderect(player.rect):
-                    enemy.rect.x = 10000
+                    enemy.kill()
         
         for player in self.players:
             if player.on_ground and player.direction.y < 0 or player.direction.y > 1:
