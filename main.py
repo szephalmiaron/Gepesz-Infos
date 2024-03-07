@@ -1,6 +1,6 @@
 import pygame
 from level import Level
-from settings import WIDTH, HEIGHT, level_map
+from settings import WIDTH, HEIGHT, level_map_1, level_choice
 from player import Gepesz
 from infos import Infos
 from enemy import Cigany
@@ -13,17 +13,22 @@ infos = Infos((WIDTH / 2, HEIGHT / 2 - 50))
 gepesz = Gepesz((WIDTH / 2, HEIGHT / 2))
 cigany = Cigany((WIDTH / 2, HEIGHT / 2))
 
-BACKGROUND = (135, 206, 235)
+background_image: str = "graphics/map/jedlik_epulet.png"
+
+BACKGROUND = pygame.image.load(background_image) 
 SPEED = 5
 
+current_level: str = level_map_1
+
+
 clock = pygame.time.Clock()
-level = Level(level_map, screen, infos, gepesz, cigany)
+level = Level(current_level, screen, infos, gepesz, cigany)
 
 RUNNING = True
 paused: bool = False
 alive: bool = True
 while RUNNING and alive:
-    screen.fill(BACKGROUND)
+    screen.blit(BACKGROUND, (0, 0))
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             RUNNING = False
