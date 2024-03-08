@@ -4,6 +4,7 @@ from settings import tile_size
 from player import Gepesz
 from infos import Infos
 from enemy import Cigany
+from menu import Menu
 
 class Level:
     button_pos_offset = 23
@@ -25,6 +26,7 @@ class Level:
         self.gepesz = gepesz  
         self.enemies = pygame.sprite.Group()
         self.cigany = cigany
+        self.menu_object = Menu(surface)
 
 
         self.setup_level(level_data)
@@ -100,18 +102,23 @@ class Level:
 
     
 
-    def run(self):
-        self.players.update()
-        self.players.draw(self.display_surface)
-        self.enemies.draw(self.display_surface)
-        self.horizontal_collision()
-        self.vertical_collision()
-        self.tiles.draw(self.display_surface)
-        self.enemy_movement()
-        if self.infos_alive and self.gepesz_alive:
-            return True
+    def run(self, paused, alive):
+        if paused:
+            self.menu_object.menudraw("pause")
+        elif not alive:
+            self.menu_object.menudraw("death")
         else:
-            return False
+            self.players.update()
+            self.players.draw(self.display_surface)
+            self.enemies.draw(self.display_surface)
+            self.horizontal_collision()
+            self.vertical_collision()
+            self.tiles.draw(self.display_surface)
+            self.enemy_movement()
+            if self.infos_alive and self.gepesz_alive:
+                return True
+            else:
+                return False
         
     def menu(self, surface):
         surface.fill((111, 152, 87))
