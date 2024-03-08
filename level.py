@@ -105,8 +105,16 @@ class Level:
     def run(self, paused, alive):
         if paused:
             self.menu_object.menudraw("pause")
+            if self.infos_alive and self.gepesz_alive:
+                return True
+            else:
+                return False
         elif not alive:
             self.menu_object.menudraw("death")
+            if self.infos_alive and self.gepesz_alive:
+                return True
+            else:
+                return False
         else:
             self.players.update()
             self.players.draw(self.display_surface)
