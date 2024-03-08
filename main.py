@@ -22,6 +22,7 @@ level = Level(level_map, screen, infos, gepesz, cigany)
 RUNNING = True
 paused: bool = False
 alive: bool = True
+iterrated: bool = False
 while RUNNING:    
     screen.fill(BACKGROUND)
     for event in pygame.event.get():
@@ -30,8 +31,10 @@ while RUNNING:
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:  
             if not paused:
                 paused = True
-            if paused:
+                iterrated = True
+            if paused and not iterrated:
                 paused = False 
     alive = level.run(paused, alive)
+    iterrated = False
     pygame.display.update()
     clock.tick(60)
