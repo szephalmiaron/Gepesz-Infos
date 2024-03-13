@@ -1,6 +1,6 @@
 import pygame
 from tiles import Tile, Water, Lift, Button, Switch, Barrier, Activate
-from settings import tile_size, level_map_1, level_choice
+from settings import tile_size, level_map_1, level_choice, level_map_2
 from player import Gepesz
 from infos import Infos
 from enemy import Cigany
@@ -19,7 +19,7 @@ class Level:
     gepesz_alive: bool = True
     switch_pic: str = "graphics/temp/switch_off.png"
     lift_max: int = 0
-    current_level: list[str] = level_choice
+    current_level: list[str] = level_map_2
     background_image = "graphics/map/palyavalasztos(folyoso).png"
     def __init__(self, surface, infos, gepesz, cigany):
         self.display_surface = surface

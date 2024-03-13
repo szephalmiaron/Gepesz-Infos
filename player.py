@@ -11,7 +11,7 @@ class Gepesz(pygame.sprite.Sprite):
         self.direction = pygame.math.Vector2(0, 0)
         self.speed: int = 5
         self.gravity: float = 0.6
-        self.jump_speed: float = -10
+        self.jump_speed: float = -14
         self.facing_left: bool = True
         self.on_ground: bool = False
         self.on_ceiling: bool = False

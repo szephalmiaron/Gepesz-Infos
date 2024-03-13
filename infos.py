@@ -1,17 +1,19 @@
 from typing import List
 import pygame
 
+
 class Infos(pygame.sprite.Sprite):
     def __init__(self, pos: tuple[int, int]) -> None:
         super().__init__()
 
-        self.image = pygame.image.load("graphics/temp/infos/infosanimacio1.png").convert_alpha()
+        self.image = pygame.image.load(
+            "graphics/temp/infos/infosanimacio1.png").convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.frame_index: float = 0
         self.direction = pygame.math.Vector2(0, 0)
         self.speed: int = 5
         self.gravity: float = 0.6
-        self.jump_speed: float = -10
+        self.jump_speed: float = -14
         self.facing_left: bool = True
         self.on_ground: bool = False
         self.on_ceiling: bool = False
