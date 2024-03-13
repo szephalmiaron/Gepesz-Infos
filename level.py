@@ -1,5 +1,5 @@
 import pygame
-from tiles import Tile, Water, Lift, Button, Switch, Barrier, Activate
+from tiles import Tile, Water, Lift, Button, Switch, Barrier, Activate, Asztal, Csempe, Parketta, Szék
 from settings import tile_size, level_map_1, level_choice
 from player import Gepesz
 from infos import Infos
@@ -92,11 +92,31 @@ class Level:
                     y = row_index * tile_size
                     self.barrier = Barrier((x, y))
                     self.tiles.add(self.barrier)
+                elif cell == "D":
+                    x = coll_index * tile_size
+                    y = row_index * tile_size
+                    self.barrier = Asztal((x, y))
+                    self.tiles.add(self.barrier)
                 elif cell == "C":
                     x = coll_index * tile_size
                     y = row_index * tile_size
-                    self.barrier = Activate((x, y))
-                    self.tiles.add(self.barrier)
+                    self.actiave = Activate((x, y))
+                    self.tiles.add(self.actiave)
+                elif cell == "T":
+                    x = coll_index * tile_size
+                    y = row_index * tile_size
+                    self.csempe = Csempe((x, y))
+                    self.tiles.add(self.csempe)
+                elif cell == "P":
+                    x = coll_index * tile_size
+                    y = row_index * tile_size
+                    self.parketta = Parketta((x, y))
+                    self.tiles.add(self.parketta)
+                elif cell == "s":
+                    x = coll_index * tile_size
+                    y = row_index * tile_size
+                    self.szek = Szék((x, y))
+                    self.tiles.add(self.szek)
 
     def lift_up(self):
         for i in self.full_lift:
