@@ -19,7 +19,7 @@ class Level:
     gepesz_alive: bool = True
     switch_pic: str = "graphics/temp/switch_off.png"
     lift_max: int = 0
-    current_level: list[str] = level_choice
+    current_level: list[str] = level_map_1
     background_image = "graphics/map/palyavalasztos(folyoso).png"
     def __init__(self, surface, infos, gepesz, cigany):
         self.display_surface = surface
