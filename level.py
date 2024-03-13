@@ -5,6 +5,7 @@ from player import Gepesz
 from infos import Infos
 from enemy import Cigany
 from menu import Menu
+from typing import List
 
 class Level:
     button_pos_offset = 23
@@ -21,6 +22,10 @@ class Level:
     lift_max: int = 0
     current_level: list[str] = level_map_1
     background_image = "graphics/map/palyavalasztos(folyoso).png"
+
+
+
+
     def __init__(self, surface, infos, gepesz, cigany):
         self.display_surface = surface
         self.tiles_dict = {}
@@ -30,9 +35,9 @@ class Level:
         self.enemies = pygame.sprite.Group()
         self.cigany = cigany
         self.menu_object = Menu(surface)
-
-
         self.setup_level(self.current_level)
+
+
 
 
     def setup_level(self, layout):
@@ -128,10 +133,6 @@ class Level:
             if self.lift_original > i.rect.y:
                 i.rect.y += 1.5
 
-    
-
-
-
     def run(self, paused, alive):
         if paused:
             self.menu_object.menudraw("pause")
@@ -189,8 +190,6 @@ class Level:
                         else:
                             enemy.facing_left = True
 
-
-
     def horizontal_collision(self):
         for player in self.players:
             player.rect.x += player.direction.x * player.speed
@@ -202,7 +201,7 @@ class Level:
                     continue
                 if isinstance(sprite, Activate):
                     if sprite.rect.colliderect(player.rect):
-                        self.current_level = level_map_1
+                        self.setup_level(level_map_1)
                 if isinstance(sprite, Switch):
                     if sprite.rect.colliderect(player.rect):
                         if player.direction.x > 0 and player.rect.left < sprite.rect.left:
@@ -233,6 +232,8 @@ class Level:
                         player.rect.right = sprite.rect.left
 
     def vertical_collision(self):
+
+
         for player in self.players:
             player.apply_gravity()
 
@@ -243,7 +244,7 @@ class Level:
                     continue
                 if isinstance(sprite, Activate):
                     if sprite.rect.colliderect(player.rect):
-                        self.current_level = level_map_1
+                        self.setup_level(level_map_1)
                 if isinstance(sprite, Button):
                     if sprite.rect.colliderect(player.rect):
                         if player == self.infos:

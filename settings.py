@@ -59,8 +59,8 @@ level_choice: list[str] = [
 "                                                           ",
 "                                                               ",
 "                                                            ",
-"    CCC           I  G                 B                        ",
-"SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSLLLSSSSS ",
+"                  I  G                 B                        ",
+"SSSSCCCSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSLLLSSSSS ",
 "SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS",
 ]
 
