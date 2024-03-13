@@ -1,6 +1,6 @@
 import pygame
-from tiles import Tile, Water, Lift, Button, Switch, Barrier
-from settings import tile_size
+from tiles import Tile, Water, Lift, Button, Switch, Barrier, Activate
+from settings import tile_size, level_map_1, level_choice
 from player import Gepesz
 from infos import Infos
 from enemy import Cigany
@@ -18,7 +18,10 @@ class Level:
     infos_alive: bool = True
     gepesz_alive: bool = True
     switch_pic: str = "graphics/temp/switch_off.png"
-    def __init__(self, level_data, surface, infos, gepesz, cigany):
+    lift_max: int = 0
+    current_level: list[str] = level_choice
+    background_image = "graphics/map/palyavalasztos(folyoso).png"
+    def __init__(self, surface, infos, gepesz, cigany):
         self.display_surface = surface
         self.tiles_dict = {}
         self.players = pygame.sprite.Group()  
@@ -29,7 +32,7 @@ class Level:
         self.menu_object = Menu(surface)
 
 
-        self.setup_level(level_data)
+        self.setup_level(self.current_level)
 
 
     def setup_level(self, layout):
@@ -89,10 +92,15 @@ class Level:
                     y = row_index * tile_size
                     self.barrier = Barrier((x, y))
                     self.tiles.add(self.barrier)
+                elif cell == "C":
+                    x = coll_index * tile_size
+                    y = row_index * tile_size
+                    self.barrier = Activate((x, y))
+                    self.tiles.add(self.barrier)
 
     def lift_up(self):
         for i in self.full_lift:
-            if i.rect.y > 650:
+            if i.rect.y > self.lift_max:
                 i.rect.y -= 4
 
     def lift_down(self):
@@ -101,6 +109,8 @@ class Level:
                 i.rect.y += 1.5
 
     
+
+
 
     def run(self, paused, alive):
         if paused:
@@ -123,6 +133,12 @@ class Level:
             self.vertical_collision()
             self.tiles.draw(self.display_surface)
             self.enemy_movement()
+            if self.current_level == level_choice:
+                self.lift_max = 450
+                self.background_image = "graphics/map/palyavalasztos(folyoso).png"
+            elif self.current_level == level_map_1:
+                self.lift_max = 650
+                self.background_image = "graphics/map/jedlik_epulet.png"
             if self.infos_alive and self.gepesz_alive:
                 return True
             else:
@@ -162,6 +178,9 @@ class Level:
                     continue
                 if isinstance(sprite, Barrier):
                     continue
+                if isinstance(sprite, Activate):
+                    if sprite.rect.colliderect(player.rect):
+                        self.current_level = level_map_1
                 if isinstance(sprite, Switch):
                     if sprite.rect.colliderect(player.rect):
                         if player.direction.x > 0 and player.rect.left < sprite.rect.left:
@@ -200,6 +219,9 @@ class Level:
                     continue
                 if isinstance(sprite, Water):
                     continue
+                if isinstance(sprite, Activate):
+                    if sprite.rect.colliderect(player.rect):
+                        self.current_level = level_map_1
                 if isinstance(sprite, Button):
                     if sprite.rect.colliderect(player.rect):
                         if player == self.infos:
