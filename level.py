@@ -135,12 +135,14 @@ class Level:
     def run(self, paused, alive):
         if paused:
             self.menu_object.menudraw("pause")
+            self.menu_object.delete_all()
             if self.infos_alive and self.gepesz_alive:
                 return True
             else:
                 return False
         elif not alive:
             self.menu_object.menudraw("death")
+            self.menu_object.delete_all()
             if self.infos_alive and self.gepesz_alive:
                 return True
             else:

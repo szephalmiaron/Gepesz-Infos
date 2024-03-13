@@ -32,9 +32,6 @@ class Menu:
         self.all_buttons.add(resume_button)
 
         self.all_buttons.draw(self.screen)
-        self.all_buttons.remove(restart_button)
-        self.all_buttons.remove(quit_button)
-        self.all_buttons.remove(resume_button)
     
     def deathmenu(self):
         self.screen.fill((255, 0, 0,))
@@ -45,11 +42,13 @@ class Menu:
         self.all_buttons.add(quit_button)
 
         self.all_buttons.draw(self.screen)
-        self.all_buttons.remove(restart_button)
-        self.all_buttons.remove(quit_button)
     
     def menudraw(self, menutype):
         if menutype == "pause":
             self.pausemenu()
         elif menutype == "death":
             self.deathmenu()
+
+    def delete_all(self):
+        for fasz in self.all_buttons:
+            self.all_buttons.remove(fasz)
