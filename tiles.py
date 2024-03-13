@@ -32,6 +32,30 @@ class Activate(pygame.sprite.Sprite):
         super().__init__()
         self.image = pygame.image.load("graphics/map/blocks/street.png")
         self.rect = self.image.get_rect(topleft = pos)
+
+class Asztal(pygame.sprite.Sprite):
+    def __init__(self, pos: tuple[int, int]):
+        super().__init__()
+        self.image = pygame.image.load("graphics/map/blocks/asztal.png")
+        self.rect = self.image.get_rect(topleft = pos)
+
+class Csempe(pygame.sprite.Sprite):
+    def __init__(self, pos: tuple[int, int]):
+        super().__init__()
+        self.image = pygame.image.load("graphics/map/blocks/csempe.png")
+        self.rect = self.image.get_rect(topleft = pos)
+class Parketta(pygame.sprite.Sprite):
+    def __init__(self, pos: tuple[int, int]):
+        super().__init__()
+        self.image = pygame.image.load("graphics/map/blocks/parketta.png")
+        self.rect = self.image.get_rect(topleft = pos)
+
+class Szék(pygame.sprite.Sprite):
+    def __init__(self, pos: tuple[int, int]):
+        super().__init__()
+        self.image = pygame.image.load("graphics/map/blocks/szek.png")
+        self.rect = self.image.get_rect(topleft = pos)
+
 class Switch(pygame.sprite.Sprite):
     def __init__(self, pos: tuple[int, int], switch_pic: str):
         super().__init__()

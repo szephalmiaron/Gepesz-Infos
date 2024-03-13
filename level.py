@@ -1,5 +1,5 @@
 import pygame
-from tiles import Tile, Water, Lift, Button, Switch, Barrier, Activate
+from tiles import Tile, Water, Lift, Button, Switch, Barrier, Activate, Asztal, Csempe, Parketta, Szék
 from settings import tile_size, level_map_1, level_choice
 from player import Gepesz
 from infos import Infos
@@ -20,7 +20,7 @@ class Level:
     gepesz_alive: bool = True
     switch_pic: str = "graphics/temp/switch_off.png"
     lift_max: int = 0
-    current_level: list[str] = level_choice
+    current_level: list[str] = level_map_1
     background_image = "graphics/map/palyavalasztos(folyoso).png"
 
 
@@ -97,11 +97,31 @@ class Level:
                     y = row_index * tile_size
                     self.barrier = Barrier((x, y))
                     self.tiles.add(self.barrier)
+                elif cell == "D":
+                    x = coll_index * tile_size
+                    y = row_index * tile_size
+                    self.barrier = Asztal((x, y))
+                    self.tiles.add(self.barrier)
                 elif cell == "C":
                     x = coll_index * tile_size
                     y = row_index * tile_size
-                    self.barrier = Activate((x, y))
-                    self.tiles.add(self.barrier)
+                    self.actiave = Activate((x, y))
+                    self.tiles.add(self.actiave)
+                elif cell == "T":
+                    x = coll_index * tile_size
+                    y = row_index * tile_size
+                    self.csempe = Csempe((x, y))
+                    self.tiles.add(self.csempe)
+                elif cell == "P":
+                    x = coll_index * tile_size
+                    y = row_index * tile_size
+                    self.parketta = Parketta((x, y))
+                    self.tiles.add(self.parketta)
+                elif cell == "s":
+                    x = coll_index * tile_size
+                    y = row_index * tile_size
+                    self.szek = Szék((x, y))
+                    self.tiles.add(self.szek)
 
     def lift_up(self):
         for i in self.full_lift:
@@ -116,8 +136,16 @@ class Level:
     def run(self, paused, alive):
         if paused:
             self.menu_object.menudraw("pause")
+            if self.infos_alive and self.gepesz_alive:
+                return True
+            else:
+                return False
         elif not alive:
             self.menu_object.menudraw("death")
+            if self.infos_alive and self.gepesz_alive:
+                return True
+            else:
+                return False
         else:
             self.players.update()
             self.players.draw(self.display_surface)

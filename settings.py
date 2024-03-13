@@ -50,9 +50,9 @@ level_choice: list[str] = [
 "",
 "",
 "",
+"                                                           ",
 "",
-"",
-"",
+"                                                           ",
 "                                                           ",
 "                                                           ",
 "                                                           ",
@@ -68,12 +68,16 @@ level_choice: list[str] = [
 #szélesség:60 karakter
 #magasság: 30 sor
 
-#S: street
-#W: water
-#L: lift
-#B: button
-#E: enemy
 #A: barrier
+#B: button
 #C: Activate
+#D: Asztal
+#E: enemy
+#L: lift
+#P: Parketta
+#S: street
+#s: Szék
+#T: Csempe
+#W: water
 tile_size: int = 32
 WIDTH, HEIGHT = 1900, len(level_map_1) * tile_size
