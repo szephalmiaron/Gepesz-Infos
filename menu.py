@@ -50,5 +50,5 @@ class Menu:
             self.deathmenu()
 
     def delete_all(self):
-        for fasz in self.all_buttons:
-            self.all_buttons.remove(fasz)
+        for button in self.all_buttons:
+            self.all_buttons.remove(button)
