@@ -1,6 +1,6 @@
 import pygame
-from tiles import Tile, Water, Lift, Button, Switch, Barrier, Activate, Asztal, Csempe, Parketta, Szék
-from settings import tile_size, level_map_1, level_choice
+from tiles import Tile, Water, Lift, Button, Switch, Barrier, Activate, Asztal, Csempe, Parketta, Szék, Finished_check, Ajtó
+from settings import tile_size, level_map_1, level_choice, level_map_2
 from player import Gepesz
 from infos import Infos
 from enemy import Cigany
@@ -20,10 +20,10 @@ class Level:
     gepesz_alive: bool = True
     switch_pic: str = "graphics/temp/switch_off.png"
     lift_max: int = 0
-    current_level: list[str] = level_map_1
-    background_image = "graphics/map/palyavalasztos(folyoso).png"
-
-
+    current_level: list[str] = level_choice
+    background_image: int = "graphics/map/palyavalasztos(folyoso).png"
+    infos_finished: bool = False
+    gepesz_finished: bool = False
 
 
     def __init__(self, surface, infos, gepesz, cigany):
@@ -122,6 +122,16 @@ class Level:
                     y = row_index * tile_size
                     self.szek = Szék((x, y))
                     self.tiles.add(self.szek)
+                elif cell == "i":
+                    x = coll_index * tile_size
+                    y = row_index * tile_size
+                    self.szek = Finished_check((x, y))
+                    self.tiles.add(self.szek)
+                elif cell == "F":
+                    x = coll_index * tile_size
+                    y = row_index * tile_size - 15
+                    self.szek = Ajtó((x, y))
+                    self.tiles.add(self.szek)
 
     def lift_up(self):
         for i in self.full_lift:
@@ -141,6 +151,7 @@ class Level:
                 return True
             else:
                 return False
+
         elif not alive:
             self.menu_object.menudraw("death")
             self.menu_object.delete_all()
@@ -156,19 +167,30 @@ class Level:
             self.vertical_collision()
             self.tiles.draw(self.display_surface)
             self.enemy_movement()
+            self.map_choose()
+            if self.infos_finished and self.gepesz_finished:
+                for enemy in self.enemies:
+                    self.setup_level(level_choice)
+                    self.current_level = level_choice
+                    self.background_image = "graphics/map/palyavalasztos(folyoso).png"
+                    self.infos_finished = False
+                    self.gepesz_finished = False
+                    enemy.kill()
             if self.current_level == level_choice:
                 self.lift_max = 450
-                self.background_image = "graphics/map/palyavalasztos(folyoso).png"
             elif self.current_level == level_map_1:
                 self.lift_max = 650
-                self.background_image = "graphics/map/jedlik_epulet.png"
             if self.infos_alive and self.gepesz_alive:
                 return True
             else:
                 return False
         
+
     def menu(self, surface):
         surface.fill((111, 152, 87))
+
+    def screen_fill(self, screen, BACKGROUND):
+        screen.blit(BACKGROUND, (0, 0))
 
     def enemy_movement(self):
         for enemy in self.enemies:
@@ -199,9 +221,14 @@ class Level:
                     continue
                 if isinstance(sprite, Barrier):
                     continue
+                if isinstance(sprite, Ajtó):
+                    continue
                 if isinstance(sprite, Activate):
                     if sprite.rect.colliderect(player.rect):
                         self.setup_level(level_map_1)
+                        self.current_level = level_map_1
+                        self.background_image = "graphics/map/terem_hatter.png"
+
                 if isinstance(sprite, Switch):
                     if sprite.rect.colliderect(player.rect):
                         if player.direction.x > 0 and player.rect.left < sprite.rect.left:
@@ -231,8 +258,33 @@ class Level:
                     elif player.direction.x > 0:
                         player.rect.right = sprite.rect.left
 
+    def map_choose(self) -> None:
+        for player in self.players:
+            if self.current_level == level_choice:
+                keys: List[bool] = pygame.key.get_pressed()
+                if keys[pygame.K_SPACE] and 108 < player.rect.x < 250 and 800 < player.rect.y < 900:
+                    self.setup_level(level_map_1)
+                    self.current_level = level_map_1
+                    self.background_image = "graphics/map/terem_hatter.png"
+                elif keys[pygame.K_SPACE] and 540 < player.rect.x < 680 and 680 < player.rect.y < 900:
+                    self.setup_level(level_map_2)
+                    self.current_level = level_map_2
+                elif keys[pygame.K_SPACE] and 990 < player.rect.x < 1130 and 680 < player.rect.y < 900:
+                    self.setup_level(level_map_3)
+                    self.current_level = level_map_3
+                elif keys[pygame.K_SPACE] and 1410 < player.rect.x < 1540 and 680 < player.rect.y < 900:
+                    self.setup_level(level_map_4)
+                    self.current_level = level_map_4
+                elif keys[pygame.K_SPACE] and 1580 < player.rect.x < 1730 and 220 < player.rect.y < 480:
+                    self.setup_level(level_map_5)
+                    self.current_level = level_map_5
+                elif keys[pygame.K_SPACE] and 1190 < player.rect.x < 1340 and 220 < player.rect.y < 480:
+                    self.setup_level(level_map_6)
+                    self.current_level = level_map_6
+    
+    
+    
     def vertical_collision(self):
-
 
         for player in self.players:
             player.apply_gravity()
@@ -242,9 +294,14 @@ class Level:
                     continue
                 if isinstance(sprite, Water):
                     continue
-                if isinstance(sprite, Activate):
-                    if sprite.rect.colliderect(player.rect):
-                        self.setup_level(level_map_1)
+                if isinstance(sprite, Ajtó):
+                    continue
+                if isinstance(sprite, Finished_check):
+                        if sprite.rect.colliderect(self.infos.rect):
+                            self.infos_finished = True
+                        if sprite.rect.colliderect(self.gepesz.rect):
+                            self.gepesz_finished = True
+                        
                 if isinstance(sprite, Button):
                     if sprite.rect.colliderect(player.rect):
                         if player == self.infos:

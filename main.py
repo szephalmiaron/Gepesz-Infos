@@ -20,14 +20,19 @@ SPEED = 5
 
 clock = pygame.time.Clock()
 level = Level(screen, infos, gepesz, cigany)
-BACKGROUND = pygame.image.load(level.background_image).convert() 
+
+BACKGROUND = pygame.image.load(level.background_image).convert()
+past_level = level.current_level 
 
 RUNNING = True
 paused: bool = False
 alive: bool = True
 iterrated: bool = False
-while RUNNING:    
-    screen.blit(BACKGROUND, (0, 0))
+while RUNNING:
+    if level.current_level != past_level:  
+        BACKGROUND = pygame.image.load(level.background_image).convert()
+        past_level = level.current_level 
+    level.screen_fill(screen, BACKGROUND)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             RUNNING = False
