@@ -150,15 +150,14 @@ class Level:
 
         if not self.infos_alive or not self.gepesz_alive:
             pygame.event.post(pygame.event.Event(event_death))
+        self.menu_object.delete_all()
 
 
     def pausemenu(self):
         self.menu_object.menudraw("pause")
-        self.menu_object.delete_all()
     
     def deathmenu(self):
         self.menu_object.menudraw("death")
-        self.menu_object.delete_all()
 
     def enemy_movement(self):
         for enemy in self.enemies:

@@ -56,6 +56,7 @@ while RUNNING:
         level.deathmenu()
     if not paused and alive:
         level.run()
+
     
     iterrated = False
     pygame.display.update()
