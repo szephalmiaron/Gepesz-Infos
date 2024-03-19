@@ -5,7 +5,7 @@ from player import Gepesz
 from infos import Infos
 from enemy import Cigany
 from menu import Menu
-from typing import List
+from events import *
 
 class Level:
     button_pos_offset = 23
@@ -133,42 +133,32 @@ class Level:
             if self.lift_original > i.rect.y:
                 i.rect.y += 1.5
 
-    def run(self, paused, alive):
-        if paused:
-            self.menu_object.menudraw("pause")
-            self.menu_object.delete_all()
-            if self.infos_alive and self.gepesz_alive:
-                return True
-            else:
-                return False
-        elif not alive:
-            self.menu_object.menudraw("death")
-            self.menu_object.delete_all()
-            if self.infos_alive and self.gepesz_alive:
-                return True
-            else:
-                return False
-        else:
-            self.players.update()
-            self.players.draw(self.display_surface)
-            self.enemies.draw(self.display_surface)
-            self.horizontal_collision()
-            self.vertical_collision()
-            self.tiles.draw(self.display_surface)
-            self.enemy_movement()
-            if self.current_level == level_choice:
-                self.lift_max = 450
-                self.background_image = "graphics/map/palyavalasztos(folyoso).png"
-            elif self.current_level == level_map_1:
-                self.lift_max = 650
-                self.background_image = "graphics/map/jedlik_epulet.png"
-            if self.infos_alive and self.gepesz_alive:
-                return True
-            else:
-                return False
-        
-    def menu(self, surface):
-        surface.fill((111, 152, 87))
+    def run(self):
+        self.players.update()
+        self.players.draw(self.display_surface)
+        self.enemies.draw(self.display_surface)
+        self.horizontal_collision()
+        self.vertical_collision()
+        self.tiles.draw(self.display_surface)
+        self.enemy_movement()
+        if self.current_level == level_choice:
+            self.lift_max = 450
+            self.background_image = "graphics/map/palyavalasztos(folyoso).png"
+        elif self.current_level == level_map_1:
+            self.lift_max = 650
+            self.background_image = "graphics/map/jedlik_epulet.png"
+
+        if not self.infos_alive or not self.gepesz_alive:
+            pygame.event.post(pygame.event.Event(event_death))
+
+
+    def pausemenu(self):
+        self.menu_object.menudraw("pause")
+        self.menu_object.delete_all()
+    
+    def deathmenu(self):
+        self.menu_object.menudraw("death")
+        self.menu_object.delete_all()
 
     def enemy_movement(self):
         for enemy in self.enemies:

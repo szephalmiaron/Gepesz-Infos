@@ -11,5 +11,7 @@ event_restart = pygame.USEREVENT + 7
 
 class MouseDataStore(pygame.sprite.Sprite):
     mouse_pos = ()
-    def getmousepos(self, mouse_pos):
+    clicked: bool = False
+    def getmousepos(self, mouse_pos, clicked):
         self.mouse_pos = mouse_pos
+        self.clicked = clicked

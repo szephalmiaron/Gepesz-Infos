@@ -5,12 +5,12 @@ class Menu_Buttons(pygame.sprite.Sprite):
     def __init__(self, pos: tuple[int, int], buttontype):
         super().__init__()
         if buttontype == "restart":
-            self.image = pygame.image.load("graphics/buttons/restart_button.png")
+            self.image = pygame.image.load("graphics/buttons/restart_button.png").convert_alpha()
         elif buttontype == "quit":
-            self.image = pygame.image.load("graphics/buttons/quit_button.png")
+            self.image = pygame.image.load("graphics/buttons/quit_button.png").convert_alpha()
         elif buttontype == "resume":
-            self.image = pygame.image.load("graphics/buttons/resume_button.png")
-        self.rect = self.image.get_rect(topleft = pos)
+            self.image = pygame.image.load("graphics/buttons/resume_button.png").convert_alpha()
+        self.rect = self.image.get_rect(topleft=pos)
 class Menu:
     POS_1_3 = (HEIGHT/4)
     POS_2_3 = (HEIGHT/4)*2
