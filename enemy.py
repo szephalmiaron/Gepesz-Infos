@@ -10,3 +10,6 @@ class Cigany(pygame.sprite.Sprite):
         self.direction = pygame.math.Vector2(0,0)
         self.speed: int = 1
         self.facing_left: bool = False
+
+    def save_original_pos(self, pos):
+        self.original_pos = pos

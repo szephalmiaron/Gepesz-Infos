@@ -21,15 +21,13 @@ SPEED = 5
 
 clock = pygame.time.Clock()
 level = Level(screen, infos, gepesz, cigany)
-mouse_data_store = MouseDataStore()
 BACKGROUND = pygame.image.load(level.background_image).convert() 
 
 RUNNING = True
 paused: bool = False
 alive: bool = True
 iterrated: bool = False
-while RUNNING:    
-    mouse_data_store.getmousepos(pygame.mouse.get_pos(), pygame.mouse.get_pressed())
+while RUNNING:
     screen.blit(BACKGROUND, (0, 0))
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -41,8 +39,9 @@ while RUNNING:
             if paused and not iterrated:
                 paused = False
         if event.type == event_restart:
-            level = Level(screen, infos, gepesz, cigany)
+            level.level_reset()
             alive = True
+            paused = False
         if event.type == event_pause:
             paused = True
         if event.type == event_unpause:
@@ -52,9 +51,9 @@ while RUNNING:
 
     if paused:
         level.pausemenu()
-    if not alive:
+    elif not alive:
         level.deathmenu()
-    if not paused and alive:
+    elif not paused and alive:
         level.run()
 
     

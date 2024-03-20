@@ -22,6 +22,7 @@ class Level:
     lift_max: int = 0
     current_level: list[str] = level_map_1
     background_image = "graphics/map/palyavalasztos(folyoso).png"
+    
 
 
 
@@ -42,10 +43,6 @@ class Level:
 
     def setup_level(self, layout):
         self.tiles = pygame.sprite.Group()
-        row_index = 0
-
-
-
 
         for row_index, row in enumerate(layout):
             for coll_index, cell in enumerate(row):
@@ -59,16 +56,19 @@ class Level:
                     y = row_index * tile_size
                     self.infos.rect.topleft = (x, y)  
                     self.players.add(self.infos)  
+                    self.infos.save_original_pos((x, y))
                 elif cell == "G":
                     x = coll_index * tile_size
                     y = row_index * tile_size
                     self.gepesz.rect.topleft = (x, y)  
                     self.players.add(self.gepesz)
+                    self.gepesz.save_original_pos((x, y))
                 elif cell == "E":
                     x = coll_index * tile_size
                     y = row_index * tile_size - 33
                     self.cigany.rect.topleft = (x, y)
-                    self.enemies.add(self.cigany)  
+                    self.enemies.add(self.cigany)
+                    self.cigany.save_original_pos((x, y))  
                 elif cell == "W":
                     x = coll_index * tile_size
                     y = row_index * tile_size
@@ -122,6 +122,14 @@ class Level:
                     y = row_index * tile_size
                     self.szek = Szék((x, y))
                     self.tiles.add(self.szek)
+
+    def level_reset(self):
+        for player in self.players:
+            player.rect.topleft = (player.original_pos)
+        for enemy in self.enemies:
+            enemy.rect.topleft = (enemy.original_pos)
+        self.switch_on = False
+        self.switch_pic = "graphics/temp/switch_off.png"
 
     def lift_up(self):
         for i in self.full_lift:
@@ -275,11 +283,11 @@ class Level:
             if player.on_ceiling and player.direction.y > 0:
                 player.on_ceiling = False
 
-        if self.button_onoff_infos is True or self.button_onoff_gepesz is True:
-            if self.button_onoff_infos is True or self.button_onoff_gepesz is True:
+        if self.button_onoff_infos or self.button_onoff_gepesz:
+            if self.button_onoff_infos or self.button_onoff_gepesz:
                 self.button.rect.y += 1.5
             self.lift_up()
-        elif self.switch_on is True:
+        elif self.switch_on:
             self.lift_up()
             if self.button_original_pos <= self.button.rect.y:
                 self.button.rect.y -= 1
