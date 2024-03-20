@@ -4,6 +4,7 @@ from settings import WIDTH, HEIGHT, level_map_1, level_choice
 from player import Gepesz
 from infos import Infos
 from enemy import Cigany
+from events import *
 
 
 pygame.init()
@@ -20,6 +21,7 @@ SPEED = 5
 
 clock = pygame.time.Clock()
 level = Level(screen, infos, gepesz, cigany)
+mouse_data_store = MouseDataStore()
 BACKGROUND = pygame.image.load(level.background_image).convert() 
 
 RUNNING = True
@@ -27,6 +29,7 @@ paused: bool = False
 alive: bool = True
 iterrated: bool = False
 while RUNNING:    
+    mouse_data_store.getmousepos(pygame.mouse.get_pos(), pygame.mouse.get_pressed())
     screen.blit(BACKGROUND, (0, 0))
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -36,8 +39,25 @@ while RUNNING:
                 paused = True
                 iterrated = True
             if paused and not iterrated:
-                paused = False 
-    alive = level.run(paused, alive)
+                paused = False
+        if event.type == event_restart:
+            level = Level(screen, infos, gepesz, cigany)
+            alive = True
+        if event.type == event_pause:
+            paused = True
+        if event.type == event_unpause:
+            paused = False
+        if event.type == event_death:
+            alive = False
+
+    if paused:
+        level.pausemenu()
+    if not alive:
+        level.deathmenu()
+    if not paused and alive:
+        level.run()
+
+    
     iterrated = False
     pygame.display.update()
     clock.tick(60)
