@@ -1,6 +1,7 @@
+from typing import List
 import pygame
 from tiles import Tile, Water, Lift, Button, Switch, Barrier, Activate, Asztal, Csempe, Parketta, Szék, Finished_check, Ajtó
-from settings import tile_size, level_map_1, level_choice, level_map_2
+from settings import tile_size, level_map_1, level_choice, level_map_2, level_map_3
 from player import Gepesz
 from infos import Infos
 from enemy import Cigany
@@ -156,6 +157,7 @@ class Level:
         self.enemies.draw(self.display_surface)
         self.horizontal_collision()
         self.vertical_collision()
+        self.map_choose()
         self.tiles.draw(self.display_surface)
         self.enemy_movement()
         if self.current_level == level_choice:
@@ -248,34 +250,42 @@ class Level:
         for player in self.players:
             if self.current_level == level_choice:
                 keys: List[bool] = pygame.key.get_pressed()
-                if keys[pygame.K_SPACE] and 108 < player.rect.x < 250 and 800 < player.rect.y < 900:
+                if keys[pygame.K_s] and 108 < self.gepesz.rect.x < 250 and 680 < self.gepesz.rect.y < 900 or keys[pygame.K_DOWN] and 108 < self.infos.rect.x < 250 and 680 < self.infos.rect.y < 900:
                     self.setup_level(level_map_1)
                     self.current_level = level_map_1
                     self.background_image = "graphics/map/terem_hatter.png"
-                elif keys[pygame.K_SPACE] and 540 < player.rect.x < 680 and 680 < player.rect.y < 900:
+                elif keys[pygame.K_s] and 540 < self.gepesz.rect.x < 680 and 680 < self.gepesz.rect.y < 900 or keys[pygame.K_DOWN] and 540 < self.infos.rect.x < 680 and 680 < self.infos.rect.y < 900:
                     self.setup_level(level_map_2)
                     self.current_level = level_map_2
-                elif keys[pygame.K_SPACE] and 990 < player.rect.x < 1130 and 680 < player.rect.y < 900:
+                    self.background_image = "graphics/map/terem_hatter.png"
+                elif keys[pygame.K_s] and 990 < self.gepesz.rect.x < 1130 and 680 < self.gepesz.rect.y < 900 or keys[pygame.K_DOWN] and 990 < self.infos.rect.x < 1130 and 680 < self.infos.rect.y < 900:
                     self.setup_level(level_map_3)
                     self.current_level = level_map_3
-                elif keys[pygame.K_SPACE] and 1410 < player.rect.x < 1540 and 680 < player.rect.y < 900:
+                    self.background_image = "graphics/map/terem_hatter.png"
+                elif keys[pygame.K_s] and 1410 < self.gepesz.rect.x < 1540 and 680 < self.gepesz.rect.y < 900 or keys[pygame.K_DOWN] and 1410 < self.infos.rect.x < 1540 and 680 < self.infos.rect.y < 900:
                     self.setup_level(level_map_4)
                     self.current_level = level_map_4
-                elif keys[pygame.K_SPACE] and 1580 < player.rect.x < 1730 and 220 < player.rect.y < 480:
+                    self.background_image = "graphics/map/terem_hatter.png"
+                elif keys[pygame.K_s] and 1580 < self.gepesz.rect.x < 1730 and 220 < self.gepesz.rect.y < 480 or keys[pygame.K_DOWN] and 1580 < self.infos.rect.x < 1730 and 220 < self.infos.rect.y < 480:
                     self.setup_level(level_map_5)
                     self.current_level = level_map_5
-                elif keys[pygame.K_SPACE] and 1190 < player.rect.x < 1340 and 220 < player.rect.y < 480:
+                    self.background_image = "graphics/map/terem_hatter.png"
+                elif keys[pygame.K_s] and 1190 < self.gepesz.rect.x < 1340 and 220 < self.gepesz.rect.y < 480 or keys[pygame.K_DOWN] and 1190 < self.infos.rect.x < 1340 and 220 < self.infos.rect.y < 480:
                     self.setup_level(level_map_6)
                     self.current_level = level_map_6
-                elif keys[pygame.K_SPACE] and 800 < player.rect.x < 940 and 220 < player.rect.y < 480:
+                    self.background_image = "graphics/map/terem_hatter.png"
+                elif keys[pygame.K_s] and 800 < self.gepesz.rect.x < 940 and 220 < self.gepesz.rect.y < 480 or keys[pygame.K_DOWN] and 800 < self.infos.rect.x < 940 and 220 < self.infos.rect.y < 480:
                     self.setup_level(level_map_7)
                     self.current_level = level_map_7
-                elif keys[pygame.K_SPACE] and 430 < player.rect.x < 570 and 220 < player.rect.y < 480:
+                    self.background_image = "graphics/map/terem_hatter.png"
+                elif keys[pygame.K_s] and 430 < self.gepesz.rect.x < 570 and 220 < self.gepesz.rect.y < 480 or keys[pygame.K_DOWN] and 430 < self.infos.rect.x < 570 and 220 < self.infos.rect.y < 480:
                     self.setup_level(level_map_8)
                     self.current_level = level_map_8
-                elif keys[pygame.K_SPACE] and 90 < player.rect.x < 230 and 220 < player.rect.y < 480:
+                    self.background_image = "graphics/map/terem_hatter.png"
+                elif keys[pygame.K_s] and 90 < self.gepesz.rect.x < 230 and 220 < self.gepesz.rect.y < 480 or keys[pygame.K_DOWN] and 90 < self.infos.rect.x < 230 and 220 < self.infos.rect.y < 480:
                     self.setup_level(level_map_9)
                     self.current_level = level_map_9
+                    self.background_image = "graphics/map/terem_hatter.png"
     
     
     

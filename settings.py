@@ -173,39 +173,6 @@ level_choice: list[str] = [
 
 
 
-level_map_2: list[str] = [
-"SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS",
-"S                                                          S",
-"S                                                          S",
-"S                                                          S",
-"S                                                          S",
-"S                                                          S",
-"S              SSSSSSSSSSS                                 S",
-"S                                                          S",
-"S                                                          S",
-"S                                                          S",
-"S                                                          S",
-"S                                                          S",
-"S                                                          S",
-"S                                                          S",
-"S                                                          S",
-"S                          F                               S",
-"S                                                          S",
-"S              SSSSSSSSSSiiiiSS                            S",
-"S            SSSSSSSSSSSSSSSSSS                            S",
-"S                                                          S",
-"S                                                          S",
-"S       E                 A            K                   S",
-"SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSWWSSSSSSSSSSSSS          S",
-"SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS          S",
-"S                                                          S",
-"S                                                          S",
-"S                                                          S",
-"S    I  G                              B                   S",
-"SSSSSSSSSSSSSSSSSSSSSSWWSSSSSWWSSSSSSSSSSSSSSSSSSSSSLLLSSSSS",
-"SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS",
-]
-
 
 #szélesség:60 karakter
 #magasság: 30 sor
