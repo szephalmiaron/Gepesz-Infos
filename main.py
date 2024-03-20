@@ -39,7 +39,7 @@ while RUNNING:
             if paused and not iterrated:
                 paused = False
         if event.type == event_restart:
-            level = Level(screen, infos, gepesz, cigany)
+            level.level_reset()
             alive = True
             paused = False
         if event.type == event_pause:
@@ -51,9 +51,9 @@ while RUNNING:
 
     if paused:
         level.pausemenu()
-    if not alive:
+    elif not alive:
         level.deathmenu()
-    if not paused and alive:
+    elif not paused and alive:
         level.run()
 
     
