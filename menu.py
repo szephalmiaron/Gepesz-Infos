@@ -13,13 +13,13 @@ class Menu_Buttons(pygame.sprite.Sprite):
         elif buttontype == "resume":
             self.image = pygame.image.load("graphics/buttons/resume_button.png").convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
+        self.type_str = buttontype
 class Menu:
     POS_1_3 = (HEIGHT/4)
     POS_2_3 = (HEIGHT/4)*2
     POS_3_3 = (HEIGHT/4)*3
     POS_1_2 = (HEIGHT/3)
     POS_2_2 = (HEIGHT/3)*2
-    mouse_data_store = MouseDataStore()
 
     def __init__(self, screen):
         self.screen = screen
@@ -28,9 +28,12 @@ class Menu:
 
     def checkcollision(self):
         for button in self.all_buttons:
-            if button.rect.collidepoint(self.mouse_data_store.mouse_x, self.mouse_data_store.mouse_y):# and self.mouse_data_store.clicked == (True, False, False):
-                print("fasz")
-                if button == restart_button:
+            if button.rect.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed() == (True, False, False):
+                if button.type_str == "resume":
+                    pygame.event.post(pygame.event.Event(event_unpause))
+                if button.type_str == "quit":
+                    pygame.event.post(pygame.event.Event(pygame.QUIT))
+                if button.type_str == "restart":
                     pygame.event.post(pygame.event.Event(event_restart))
     
     def pausemenu(self):
@@ -43,9 +46,7 @@ class Menu:
         self.all_buttons.add(resume_button)
 
         self.all_buttons.draw(self.screen)
-        for button in self.all_buttons:
-            if button.rect.collidepoint(self.mouse_data_store.mouse_x, self.mouse_data_store.mouse_y):
-                print("fasz")
+        self.checkcollision()
     
     def deathmenu(self):
         self.screen.fill((255, 0, 0,))
