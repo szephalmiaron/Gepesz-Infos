@@ -1,6 +1,6 @@
 import pygame
-from tiles import Tile, Water, Lift, Button, Switch, Barrier, Activate, Asztal, Csempe, Parketta, Szék
-from settings import tile_size, level_map_1, level_choice
+from tiles import Tile, Water, Lift, Button, Switch, Barrier, Activate, Asztal, Csempe, Parketta, Szék, Finished_check, Ajtó
+from settings import tile_size, level_map_1, level_choice, level_map_2
 from player import Gepesz
 from infos import Infos
 from enemy import Cigany
@@ -20,11 +20,10 @@ class Level:
     gepesz_alive: bool = True
     switch_pic: str = "graphics/temp/switch_off.png"
     lift_max: int = 0
-    current_level: list[str] = level_map_1
-    background_image = "graphics/map/palyavalasztos(folyoso).png"
-    
-
-
+    current_level: list[str] = level_choice
+    background_image: int = "graphics/map/palyavalasztos(folyoso).png"
+    infos_finished: bool = False
+    gepesz_finished: bool = False
 
 
     def __init__(self, surface, infos, gepesz, cigany):
@@ -122,6 +121,16 @@ class Level:
                     y = row_index * tile_size
                     self.szek = Szék((x, y))
                     self.tiles.add(self.szek)
+                elif cell == "i":
+                    x = coll_index * tile_size
+                    y = row_index * tile_size
+                    self.szek = Finished_check((x, y))
+                    self.tiles.add(self.szek)
+                elif cell == "F":
+                    x = coll_index * tile_size
+                    y = row_index * tile_size - 15
+                    self.szek = Ajtó((x, y))
+                    self.tiles.add(self.szek)
 
     def level_reset(self):
         for player in self.players:
@@ -166,6 +175,9 @@ class Level:
     def deathmenu(self):
         self.menu_object.menudraw("death")
 
+    def screen_fill(self, screen, BACKGROUND):
+        screen.blit(BACKGROUND, (0, 0))
+
     def enemy_movement(self):
         for enemy in self.enemies:
             if enemy.facing_left:
@@ -195,9 +207,14 @@ class Level:
                     continue
                 if isinstance(sprite, Barrier):
                     continue
+                if isinstance(sprite, Ajtó):
+                    continue
                 if isinstance(sprite, Activate):
                     if sprite.rect.colliderect(player.rect):
                         self.setup_level(level_map_1)
+                        self.current_level = level_map_1
+                        self.background_image = "graphics/map/terem_hatter.png"
+
                 if isinstance(sprite, Switch):
                     if sprite.rect.colliderect(player.rect):
                         if player.direction.x > 0 and player.rect.left < sprite.rect.left:
@@ -227,8 +244,42 @@ class Level:
                     elif player.direction.x > 0:
                         player.rect.right = sprite.rect.left
 
+    def map_choose(self) -> None:
+        for player in self.players:
+            if self.current_level == level_choice:
+                keys: List[bool] = pygame.key.get_pressed()
+                if keys[pygame.K_SPACE] and 108 < player.rect.x < 250 and 800 < player.rect.y < 900:
+                    self.setup_level(level_map_1)
+                    self.current_level = level_map_1
+                    self.background_image = "graphics/map/terem_hatter.png"
+                elif keys[pygame.K_SPACE] and 540 < player.rect.x < 680 and 680 < player.rect.y < 900:
+                    self.setup_level(level_map_2)
+                    self.current_level = level_map_2
+                elif keys[pygame.K_SPACE] and 990 < player.rect.x < 1130 and 680 < player.rect.y < 900:
+                    self.setup_level(level_map_3)
+                    self.current_level = level_map_3
+                elif keys[pygame.K_SPACE] and 1410 < player.rect.x < 1540 and 680 < player.rect.y < 900:
+                    self.setup_level(level_map_4)
+                    self.current_level = level_map_4
+                elif keys[pygame.K_SPACE] and 1580 < player.rect.x < 1730 and 220 < player.rect.y < 480:
+                    self.setup_level(level_map_5)
+                    self.current_level = level_map_5
+                elif keys[pygame.K_SPACE] and 1190 < player.rect.x < 1340 and 220 < player.rect.y < 480:
+                    self.setup_level(level_map_6)
+                    self.current_level = level_map_6
+                elif keys[pygame.K_SPACE] and 800 < player.rect.x < 940 and 220 < player.rect.y < 480:
+                    self.setup_level(level_map_7)
+                    self.current_level = level_map_7
+                elif keys[pygame.K_SPACE] and 430 < player.rect.x < 570 and 220 < player.rect.y < 480:
+                    self.setup_level(level_map_8)
+                    self.current_level = level_map_8
+                elif keys[pygame.K_SPACE] and 90 < player.rect.x < 230 and 220 < player.rect.y < 480:
+                    self.setup_level(level_map_9)
+                    self.current_level = level_map_9
+    
+    
+    
     def vertical_collision(self):
-
 
         for player in self.players:
             player.apply_gravity()
@@ -238,9 +289,14 @@ class Level:
                     continue
                 if isinstance(sprite, Water):
                     continue
-                if isinstance(sprite, Activate):
-                    if sprite.rect.colliderect(player.rect):
-                        self.setup_level(level_map_1)
+                if isinstance(sprite, Ajtó):
+                    continue
+                if isinstance(sprite, Finished_check):
+                        if sprite.rect.colliderect(self.infos.rect):
+                            self.infos_finished = True
+                        if sprite.rect.colliderect(self.gepesz.rect):
+                            self.gepesz_finished = True
+                        
                 if isinstance(sprite, Button):
                     if sprite.rect.colliderect(player.rect):
                         if player == self.infos:
