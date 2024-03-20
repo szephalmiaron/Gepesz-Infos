@@ -104,14 +104,15 @@ level_map_2: list[str] = [
 
 level_map_3: list[str] = [
 "SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS      BACKLW",
+"S                                                         S",
 "S                                   L                      S",
 "S                             B          B                 S",
 "S              SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS    S",
 "S              S                                       S   S",
 "S              S                                           S",
-"S              S    SSS                                    S",
-"S       K      S    S S                                    S",
-"S   SSSSSSSSSSSS    S S               K                   SS",
+"S      K       S    SSS                                    S",
+"S   SSSSSSSSSSSS    S S                                    S",
+"S              S    S S               K                   SS",
 "S              S    S S          SSSSSSSSSSS               S",
 "S              S    S S                                    S",
 "S              S    S S                                    S",
@@ -130,7 +131,6 @@ level_map_3: list[str] = [
 "S              SSSSSSSSSSSSSSSSS    SSSSSSSS    SSSSSSS    S",
 "S                                   S      S               S",
 "S    I  G   K                       S      S               S",
-"SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS",
 "SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS",
 "SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS",
 ]
