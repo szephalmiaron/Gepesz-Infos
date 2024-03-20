@@ -42,3 +42,6 @@ class Gepesz(pygame.sprite.Sprite):
 
     def update(self) -> None:
         self.get_input()
+
+    def save_original_pos(self, pos):
+        self.original_pos = pos
