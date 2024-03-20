@@ -281,6 +281,15 @@ class Level:
                 elif keys[pygame.K_SPACE] and 1190 < player.rect.x < 1340 and 220 < player.rect.y < 480:
                     self.setup_level(level_map_6)
                     self.current_level = level_map_6
+                elif keys[pygame.K_SPACE] and 800 < player.rect.x < 940 and 220 < player.rect.y < 480:
+                    self.setup_level(level_map_7)
+                    self.current_level = level_map_7
+                elif keys[pygame.K_SPACE] and 430 < player.rect.x < 570 and 220 < player.rect.y < 480:
+                    self.setup_level(level_map_8)
+                    self.current_level = level_map_8
+                elif keys[pygame.K_SPACE] and 90 < player.rect.x < 230 and 220 < player.rect.y < 480:
+                    self.setup_level(level_map_9)
+                    self.current_level = level_map_9
     
     
     
