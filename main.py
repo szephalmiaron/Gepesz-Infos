@@ -8,11 +8,15 @@ from events import *
 
 
 pygame.init()
+pygame.font.init()
+
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 infos = Infos((WIDTH / 2, HEIGHT / 2 - 50))  
 gepesz = Gepesz((WIDTH / 2, HEIGHT / 2))
 cigany = Cigany((WIDTH / 2, HEIGHT / 2))
+game_font: pygame.font.Font = pygame.font.Font(None, 60)
+
 
 
 
@@ -20,7 +24,7 @@ SPEED = 5
 
 
 clock = pygame.time.Clock()
-level = Level(screen, infos, gepesz, cigany)
+level = Level(screen, infos, gepesz, cigany, game_font)
 
 BACKGROUND = pygame.image.load(level.background_image).convert()
 past_level = level.current_level 

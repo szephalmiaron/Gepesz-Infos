@@ -6,6 +6,7 @@ from infos import Infos
 from enemy import Cigany
 from menu import Menu
 from events import *
+from timer import *
 
 class Level:
     button_pos_offset = 23
@@ -26,7 +27,8 @@ class Level:
     gepesz_finished: bool = False
 
 
-    def __init__(self, surface, infos, gepesz, cigany):
+
+    def __init__(self, surface, infos, gepesz, cigany, font):
         self.display_surface = surface
         self.tiles_dict = {}
         self.players = pygame.sprite.Group()  
@@ -36,6 +38,8 @@ class Level:
         self.cigany = cigany
         self.menu_object = Menu(surface)
         self.setup_level(self.current_level)
+        self.game_font = font
+        self.timer = Timer(surface, self.game_font, (500, 100, 200, 100))
 
 
 
@@ -158,6 +162,8 @@ class Level:
         self.vertical_collision()
         self.tiles.draw(self.display_surface)
         self.enemy_movement()
+        self.map_choose()
+        self.timer.time_print()
         if self.current_level == level_choice:
             self.lift_max = 450
             self.background_image = "graphics/map/palyavalasztos(folyoso).png"
@@ -171,6 +177,7 @@ class Level:
 
     def pausemenu(self):
         self.menu_object.menudraw("pause")
+        self.timer.reset_timer()
     
     def deathmenu(self):
         self.menu_object.menudraw("death")
