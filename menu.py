@@ -6,7 +6,9 @@ from events import *
 class Menu_Buttons(pygame.sprite.Sprite):
     def __init__(self, pos: tuple[int, int], buttontype):
         super().__init__()
-        if buttontype == "restart":
+        if buttontype == "home":
+            self.image = pygame.image.load("graphics/buttons/homgomboooo.png").convert_alpha()
+        elif buttontype == "restart":
             self.image = pygame.image.load("graphics/buttons/restart_button.png").convert_alpha()
         elif buttontype == "quit":
             self.image = pygame.image.load("graphics/buttons/quit_button.png").convert_alpha()
@@ -20,6 +22,11 @@ class Menu:
     POS_3_3 = (HEIGHT/4)*3
     POS_1_2 = (HEIGHT/3)
     POS_2_2 = (HEIGHT/3)*2
+    POS_1_4 = (HEIGHT/5)
+    POS_2_4 = (HEIGHT/5)*2
+    POS_3_4 = (HEIGHT/5)*3
+    POS_4_4 = (HEIGHT/5)*4
+    background_image = "graphics\map\crackhead.png"
 
     def __init__(self, screen):
         self.screen = screen
@@ -37,12 +44,14 @@ class Menu:
                     pygame.event.post(pygame.event.Event(event_restart))
     
     def pausemenu(self):
-        self.screen.fill((0, 255, 0))
-        restart_button = Menu_Buttons((WIDTH//2, self.POS_1_3), "restart")
+        self.screen.fill(self.background_image)
+        home_button = Menu_Buttons((WIDTH//2, self.POS_1_4), "home")
+        self.all_buttons.add(home_button)
+        restart_button = Menu_Buttons((WIDTH//2, self.POS_2_4), "restart")
         self.all_buttons.add(restart_button)
-        quit_button = Menu_Buttons((WIDTH//2, self.POS_2_3), "quit")
+        quit_button = Menu_Buttons((WIDTH//2, self.POS_3_4), "quit")
         self.all_buttons.add(quit_button)
-        resume_button = Menu_Buttons((WIDTH//2, self.POS_3_3), "resume")
+        resume_button = Menu_Buttons((WIDTH//2, self.POS_4_4), "resume")
         self.all_buttons.add(resume_button)
 
         self.all_buttons.draw(self.screen)
@@ -50,10 +59,11 @@ class Menu:
     
     def deathmenu(self):
         self.screen.fill((255, 0, 0,))
-
-        restart_button = Menu_Buttons((WIDTH//2, self.POS_1_2), "restart")
+        home_button = Menu_Buttons((WIDTH//2, self.POS_1_3), "home")
+        self.all_buttons.add(home_button)
+        restart_button = Menu_Buttons((WIDTH//2, self.POS_2_3), "restart")
         self.all_buttons.add(restart_button)
-        quit_button = Menu_Buttons((WIDTH//2, self.POS_2_2), "quit")
+        quit_button = Menu_Buttons((WIDTH//2, self.POS_3_3), "quit")
         self.all_buttons.add(quit_button)
 
         self.all_buttons.draw(self.screen)
