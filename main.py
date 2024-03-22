@@ -54,7 +54,10 @@ while RUNNING:
             paused = False
         if event.type == event_death:
             alive = False
-
+        if event.type == event_home:
+            level.current_level = level_choice
+            level.level_reset()
+            paused = False
     if paused:
         level.pausemenu()
     elif not alive:

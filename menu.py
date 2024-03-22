@@ -36,6 +36,8 @@ class Menu:
     def checkcollision(self):
         for button in self.all_buttons:
             if button.rect.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed() == (True, False, False):
+                if button.type_str == "home":
+                    pygame.event.post(pygame.event.Event(event_home)) 
                 if button.type_str == "resume":
                     pygame.event.post(pygame.event.Event(event_unpause))
                 if button.type_str == "quit":
@@ -44,7 +46,7 @@ class Menu:
                     pygame.event.post(pygame.event.Event(event_restart))
     
     def pausemenu(self):
-        self.screen.fill(self.background_image)
+        self.screen.fill((0, 255, 0))
         home_button = Menu_Buttons((WIDTH//2, self.POS_1_4), "home")
         self.all_buttons.add(home_button)
         restart_button = Menu_Buttons((WIDTH//2, self.POS_2_4), "restart")
