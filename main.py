@@ -1,3 +1,4 @@
+from asyncore import loop
 import pygame
 from level import Level
 from settings import WIDTH, HEIGHT, level_map_1, level_choice
@@ -5,14 +6,19 @@ from player import Gepesz
 from infos import Infos
 from enemy import Cigany
 from events import *
+from timer import *
 
 
 pygame.init()
+pygame.font.init()
+
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 infos = Infos((WIDTH / 2, HEIGHT / 2 - 50))  
 gepesz = Gepesz((WIDTH / 2, HEIGHT / 2))
 cigany = Cigany((WIDTH / 2, HEIGHT / 2))
+game_font: pygame.font.Font = pygame.font.Font(None, 60)
+
 
 
 
@@ -20,7 +26,8 @@ SPEED = 5
 
 
 clock = pygame.time.Clock()
-level = Level(screen, infos, gepesz, cigany)
+timer = Timer(screen, game_font, (500, 100, 200, 100), clock)
+level = Level(screen, infos, gepesz, cigany, game_font, timer)
 
 BACKGROUND = pygame.image.load(level.background_image).convert()
 past_level = level.current_level 
@@ -65,7 +72,7 @@ while RUNNING:
     elif not paused and alive:
         level.run()
 
-    
+
     iterrated = False
     pygame.display.update()
-    clock.tick(60)
+    clock.tick_busy_loop(60)
