@@ -37,15 +37,16 @@ class Level:
         self.enemies = pygame.sprite.Group()
         self.cigany = cigany
         self.menu_object = Menu(surface)
-        self.setup_level(self.current_level)
         self.game_font = font
         self.timer = clock
+        self.setup_level(self.current_level)
 
 
 
 
     def setup_level(self, layout):
         self.tiles = pygame.sprite.Group()
+        self.timer.reset_timer()
 
         for row_index, row in enumerate(layout):
             for coll_index, cell in enumerate(row):
@@ -143,6 +144,13 @@ class Level:
             enemy.rect.topleft = (enemy.original_pos)
         self.switch_on = False
         self.switch_pic = "graphics/temp/switch_off.png"
+        self.timer.reset_timer()
+
+    def level_home(self):
+        for enemy in self.enemies:
+            enemy.kill()
+        self.current_level = level_choice
+        self.timer.reset_timer()
 
     def lift_up(self):
         for i in self.full_lift:
@@ -177,7 +185,6 @@ class Level:
 
     def pausemenu(self):
         self.menu_object.menudraw("pause")
-        self.timer.reset_timer()
     
     def deathmenu(self):
         self.menu_object.menudraw("death")
