@@ -73,5 +73,3 @@ while RUNNING:
     iterrated = False
     pygame.display.update()
     clock.tick_busy_loop(60)
-
-    #xdd
