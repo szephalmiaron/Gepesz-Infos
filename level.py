@@ -1,6 +1,6 @@
 import pygame
-from tiles import Tile, Water, Lift, Button, Switch, Barrier, Activate, Asztal, Csempe, Parketta, Szék, Finished_check, Ajtó
-from settings import tile_size, level_map_1, level_choice, level_map_2
+from tiles import *
+from settings import *
 from player import Gepesz
 from infos import Infos
 from enemy import Cigany

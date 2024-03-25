@@ -1,7 +1,7 @@
 from asyncore import loop
 import pygame
 from level import Level
-from settings import WIDTH, HEIGHT, level_map_1, level_choice
+from settings import *
 from player import Gepesz
 from infos import Infos
 from enemy import Cigany
