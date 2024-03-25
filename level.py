@@ -28,7 +28,7 @@ class Level:
 
 
 
-    def __init__(self, surface, infos, gepesz, cigany, font):
+    def __init__(self, surface, infos, gepesz, cigany, font, clock):
         self.display_surface = surface
         self.tiles_dict = {}
         self.players = pygame.sprite.Group()  
@@ -39,7 +39,7 @@ class Level:
         self.menu_object = Menu(surface)
         self.setup_level(self.current_level)
         self.game_font = font
-        self.timer = Timer(surface, self.game_font, (500, 100, 200, 100))
+        self.timer = clock
 
 
 
