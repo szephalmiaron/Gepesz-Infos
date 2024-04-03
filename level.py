@@ -1,6 +1,6 @@
 import pygame
 from tiles import Tile, Water, Lift, Button, Switch, Barrier, Activate, Asztal, Csempe, Parketta, Szék, Finished_check, Ajtó
-from settings import tile_size, level_map_1, level_choice, level_map_2
+from settings import tile_size, level_map_1, level_choice, level_map_2, level_map_5, level_map_4, level_map_3, level_map_6
 from player import Gepesz
 from infos import Infos
 from enemy import Cigany
@@ -21,7 +21,7 @@ class Level:
     gepesz_alive: bool = True
     switch_pic: str = "graphics/temp/switch_off.png"
     lift_max: int = 0
-    current_level: list[str] = level_choice
+    current_level: list[str] = level_map_6
     background_image: int = "graphics/map/palyavalasztos(folyoso).png"
     infos_finished: bool = False
     gepesz_finished: bool = False
