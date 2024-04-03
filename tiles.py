@@ -79,3 +79,9 @@ class Switch(pygame.sprite.Sprite):
             self.image = pygame.image.load("graphics/temp/switch_on.png")  
         else:
             self.image = pygame.image.load("graphics/temp/switch_off.png")
+
+class Platform(pygame.sprite.Sprite):
+    def __init__(self, pos: tuple[int, int]):
+        super().__init__()
+        self.image = pygame.image.load("graphics/map/blocks/platform.png")
+        self.rect = self.image.get_rect(topleft = pos)
