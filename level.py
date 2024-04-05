@@ -297,7 +297,10 @@ class Level:
                 if isinstance(sprite, Barrier):
                     continue
                 if isinstance(sprite, Water):
-                    continue
+                    if sprite.rect.colliderect(self.infos.rect):
+                        self.infos_alive = False
+                    if sprite.rect.colliderect(self.gepesz.rect):
+                        self. gepesz_alive = False
                 if isinstance(sprite, Ajtó):
                     continue
                 if isinstance(sprite, Finished_check):
