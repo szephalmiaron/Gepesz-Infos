@@ -22,7 +22,7 @@ class Level:
     gepesz_alive: bool = True
     switch_pic: str = "graphics/temp/switch_off.png"
     lift_max: int = 0
-    current_level: list[str] = level_map_9
+    current_level: list[str] = level_choice
     background_image: int = "graphics/map/palyavalasztos(folyoso).png"
     infos_finished: bool = False
     gepesz_finished: bool = False
