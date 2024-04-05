@@ -1,12 +1,13 @@
 import pygame
-from tiles import Tile, Water, Lift, Button, Switch, Barrier, Activate, Asztal, Csempe, Parketta, Szék, Finished_check, Ajtó
-from settings import tile_size, level_map_1, level_choice, level_map_2, level_map_5, level_map_4, level_map_3, level_map_6
+from tiles import *
+from settings import *
 from player import Gepesz
 from infos import Infos
 from enemy import Cigany
 from menu import Menu
 from events import *
 from timer import *
+
 
 class Level:
     button_pos_offset = 23
@@ -21,28 +22,23 @@ class Level:
     gepesz_alive: bool = True
     switch_pic: str = "graphics/temp/switch_off.png"
     lift_max: int = 0
-    current_level: list[str] = level_map_6
+    current_level: list[str] = level_map_8
     background_image: int = "graphics/map/palyavalasztos(folyoso).png"
     infos_finished: bool = False
     gepesz_finished: bool = False
 
-
-
     def __init__(self, surface, infos, gepesz, cigany, font, clock):
         self.display_surface = surface
         self.tiles_dict = {}
-        self.players = pygame.sprite.Group()  
-        self.infos = infos  
-        self.gepesz = gepesz  
+        self.players = pygame.sprite.Group()
+        self.infos = infos
+        self.gepesz = gepesz
         self.enemies = pygame.sprite.Group()
         self.cigany = cigany
         self.menu_object = Menu(surface)
         self.setup_level(self.current_level)
         self.game_font = font
         self.timer = clock
-
-
-
 
     def setup_level(self, layout):
         self.tiles = pygame.sprite.Group()
@@ -53,17 +49,17 @@ class Level:
                     x = coll_index * tile_size
                     y = row_index * tile_size
                     tile_X = Tile((x, y))
-                    self.tiles.add(tile_X)  
+                    self.tiles.add(tile_X)
                 elif cell == "I":
                     x = coll_index * tile_size
                     y = row_index * tile_size
-                    self.infos.rect.topleft = (x, y)  
-                    self.players.add(self.infos)  
+                    self.infos.rect.topleft = (x, y)
+                    self.players.add(self.infos)
                     self.infos.save_original_pos((x, y))
                 elif cell == "G":
                     x = coll_index * tile_size
                     y = row_index * tile_size
-                    self.gepesz.rect.topleft = (x, y)  
+                    self.gepesz.rect.topleft = (x, y)
                     self.players.add(self.gepesz)
                     self.gepesz.save_original_pos((x, y))
                 elif cell == "E":
@@ -71,7 +67,7 @@ class Level:
                     y = row_index * tile_size - 33
                     self.cigany.rect.topleft = (x, y)
                     self.enemies.add(self.cigany)
-                    self.cigany.save_original_pos((x, y))  
+                    self.cigany.save_original_pos((x, y))
                 elif cell == "W":
                     x = coll_index * tile_size
                     y = row_index * tile_size
@@ -88,13 +84,13 @@ class Level:
                     x = coll_index * tile_size
                     y = row_index * tile_size + self.button_pos_offset
                     self.button = Button((x, y))
-                    self.tiles.add(self.button)                      
+                    self.tiles.add(self.button)
                     self.button_original_pos = self.button.rect.y
                 elif cell == "K":
                     x = coll_index * tile_size
                     y = row_index * tile_size
                     self.switch = Switch((x, y), self.switch_pic)
-                    self.tiles.add(self.switch)  
+                    self.tiles.add(self.switch)
                 elif cell == "A":
                     x = coll_index * tile_size
                     y = row_index * tile_size
@@ -135,6 +131,11 @@ class Level:
                     y = row_index * tile_size - 15
                     self.szek = Ajtó((x, y))
                     self.tiles.add(self.szek)
+                elif cell == "H":
+                    x = coll_index * tile_size
+                    y = row_index * tile_size
+                    self.platform = Platform((x, y))
+                    self.tiles.add(self.platform)
 
     def level_reset(self):
         for player in self.players:
@@ -170,6 +171,9 @@ class Level:
         elif self.current_level == level_map_1:
             self.lift_max = 650
             self.background_image = "graphics/map/jedlik_epulet.png"
+        elif self.current_level == level_map_7:
+            self.lift_max = 610
+            self.background_image = "graphics/map/jedlik_epulet.png"
 
         if not self.infos_alive or not self.gepesz_alive:
             pygame.event.post(pygame.event.Event(event_death))
@@ -178,7 +182,7 @@ class Level:
     def pausemenu(self):
         self.menu_object.menudraw("pause")
         self.timer.reset_timer()
-    
+
     def deathmenu(self):
         self.menu_object.menudraw("death")
 
@@ -198,7 +202,7 @@ class Level:
                             enemy.facing_left = False
                         else:
                             enemy.facing_left = True
-                if isinstance(sprite,Tile):
+                if isinstance(sprite, Tile):
                     if sprite.rect.colliderect(enemy.rect):
                         if enemy.facing_left:
                             enemy.facing_left = False
@@ -283,9 +287,7 @@ class Level:
                 elif keys[pygame.K_SPACE] and 90 < player.rect.x < 230 and 220 < player.rect.y < 480:
                     self.setup_level(level_map_9)
                     self.current_level = level_map_9
-    
-    
-    
+
     def vertical_collision(self):
 
         for player in self.players:
@@ -299,11 +301,11 @@ class Level:
                 if isinstance(sprite, Ajtó):
                     continue
                 if isinstance(sprite, Finished_check):
-                        if sprite.rect.colliderect(self.infos.rect):
-                            self.infos_finished = True
-                        if sprite.rect.colliderect(self.gepesz.rect):
-                            self.gepesz_finished = True
-                        
+                    if sprite.rect.colliderect(self.infos.rect):
+                        self.infos_finished = True
+                    if sprite.rect.colliderect(self.gepesz.rect):
+                        self.gepesz_finished = True
+
                 if isinstance(sprite, Button):
                     if sprite.rect.colliderect(player.rect):
                         if player == self.infos:
@@ -338,7 +340,7 @@ class Level:
             for enemy in self.enemies:
                 if enemy.rect.colliderect(player.rect):
                     enemy.kill()
-        
+
         for player in self.players:
             if player.on_ground and player.direction.y < 0 or player.direction.y > 1:
                 player.on_ground = False
