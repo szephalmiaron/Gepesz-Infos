@@ -22,7 +22,7 @@ class Level:
     gepesz_alive: bool = True
     switch_pic: str = "graphics/temp/switch_off.png"
     lift_max: int = 0
-    current_level: list[str] = level_choice
+    current_level: list[str] = level_map_7
     background_image: int = "graphics/map/palyavalasztos(folyoso).png"
     infos_finished: bool = False
     gepesz_finished: bool = False
@@ -170,6 +170,9 @@ class Level:
             self.background_image = "graphics/map/palyavalasztos(folyoso).png"
         elif self.current_level == level_map_1:
             self.lift_max = 650
+            self.background_image = "graphics/map/jedlik_epulet.png"
+        elif self.current_level == level_map_7:
+            self.lift_max = 610
             self.background_image = "graphics/map/jedlik_epulet.png"
 
         if not self.infos_alive or not self.gepesz_alive:
