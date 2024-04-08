@@ -27,3 +27,6 @@ class Score():
     
     def add_score(self, amount):
         self.score += amount
+
+    def win(self, time):
+        self.score += (90 - int(time))

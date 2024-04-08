@@ -36,6 +36,7 @@ past_level = level.current_level
 RUNNING = True
 paused: bool = False
 alive: bool = True
+won: bool = False
 iterrated: bool = False
 while RUNNING:
     if level.current_level != past_level:  
@@ -56,6 +57,7 @@ while RUNNING:
             level.level_reset()
             alive = True
             paused = False
+            won = False
         if event.type == event_pause:
             paused = True
         if event.type == event_unpause:
@@ -66,6 +68,12 @@ while RUNNING:
             level.current_level = level_choice
             level.level_reset()
             paused = False
+            won = False
+        if event.type == event_win:
+            won = True
+
+    if won:
+        level.winscreen()
     if paused:
         level.pausemenu()
     elif not alive:

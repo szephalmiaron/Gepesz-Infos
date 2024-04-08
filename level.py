@@ -180,12 +180,21 @@ class Level:
             pygame.event.post(pygame.event.Event(event_death))
         self.menu_object.delete_all()
 
+        if self.infos_finished and self.gepesz_finished:
+            pygame.event.post(pygame.event.Event(event_win))
+
     def pausemenu(self):
         self.menu_object.menudraw("pause")
         self.scorecounter.score_print()
 
     def deathmenu(self):
         self.menu_object.menudraw("death")
+        self.timer.reset_timer()
+        self.scorecounter.score_print()
+
+    def winscreen(self):
+        self.menu_object.menudraw("win")
+        self.scorecounter.win()
         self.timer.reset_timer()
         self.scorecounter.score_print()
 
@@ -226,12 +235,6 @@ class Level:
                     continue
                 if isinstance(sprite, Ajtó):
                     continue
-                if isinstance(sprite, Activate):
-                    if sprite.rect.colliderect(player.rect):
-                        self.setup_level(level_map_1)
-                        self.current_level = level_map_1
-                        self.background_image = "graphics/map/terem_hatter.png"
-
                 if isinstance(sprite, Switch):
                     if sprite.rect.colliderect(player.rect):
                         if player.direction.x > 0 and player.rect.left < sprite.rect.left:
