@@ -265,32 +265,32 @@ class Level:
         for player in self.players:
             if self.current_level == level_choice:
                 keys: List[bool] = pygame.key.get_pressed()
-                if keys[pygame.K_SPACE] and 108 < player.rect.x < 250 and 800 < player.rect.y < 900 and maplock.get(level_map_1) == "unlocked":
+                if keys[pygame.K_SPACE] and 108 < player.rect.x < 250 and 800 < player.rect.y < 900 and maplock.get("level_map_1") == "unlocked":
                     self.setup_level(level_map_1)
                     self.current_level = level_map_1
                     self.background_image = "graphics/map/terem_hatter.png"
-                elif keys[pygame.K_SPACE] and 540 < player.rect.x < 680 and 680 < player.rect.y < 900 and maplock.get(level_map_2) == "unlocked":
+                elif keys[pygame.K_SPACE] and 540 < player.rect.x < 680 and 680 < player.rect.y < 900 and maplock.get("level_map_2") == "unlocked":
                     self.setup_level(level_map_2)
                     self.current_level = level_map_2
-                elif keys[pygame.K_SPACE] and 990 < player.rect.x < 1130 and 680 < player.rect.y < 900 and maplock.get(level_map_3) == "unlocked":
+                elif keys[pygame.K_SPACE] and 990 < player.rect.x < 1130 and 680 < player.rect.y < 900 and maplock.get("level_map_3") == "unlocked":
                     self.setup_level(level_map_3)
                     self.current_level = level_map_3
-                elif keys[pygame.K_SPACE] and 1410 < player.rect.x < 1540 and 680 < player.rect.y < 900 and maplock.get(level_map_4) == "unlocked":
+                elif keys[pygame.K_SPACE] and 1410 < player.rect.x < 1540 and 680 < player.rect.y < 900 and maplock.get("level_map_4") == "unlocked":
                     self.setup_level(level_map_4)
                     self.current_level = level_map_4
-                elif keys[pygame.K_SPACE] and 1580 < player.rect.x < 1730 and 220 < player.rect.y < 480 and maplock.get(level_map_5) == "unlocked":
+                elif keys[pygame.K_SPACE] and 1580 < player.rect.x < 1730 and 220 < player.rect.y < 480 and maplock.get("level_map_5") == "unlocked":
                     self.setup_level(level_map_5)
                     self.current_level = level_map_5
-                elif keys[pygame.K_SPACE] and 1190 < player.rect.x < 1340 and 220 < player.rect.y < 480 and maplock.get(level_map_6) == "unlocked":
+                elif keys[pygame.K_SPACE] and 1190 < player.rect.x < 1340 and 220 < player.rect.y < 480 and maplock.get("level_map_6") == "unlocked":
                     self.setup_level(level_map_6)
                     self.current_level = level_map_6
-                elif keys[pygame.K_SPACE] and 800 < player.rect.x < 940 and 220 < player.rect.y < 480 and maplock.get(level_map_7) == "unlocked":
+                elif keys[pygame.K_SPACE] and 800 < player.rect.x < 940 and 220 < player.rect.y < 480 and maplock.get("level_map_7") == "unlocked":
                     self.setup_level(level_map_7)
                     self.current_level = level_map_7
-                elif keys[pygame.K_SPACE] and 430 < player.rect.x < 570 and 220 < player.rect.y < 480 and maplock.get(level_map_8) == "unlocked":
+                elif keys[pygame.K_SPACE] and 430 < player.rect.x < 570 and 220 < player.rect.y < 480 and maplock.get("level_map_8") == "unlocked":
                     self.setup_level(level_map_8)
                     self.current_level = level_map_8
-                elif keys[pygame.K_SPACE] and 90 < player.rect.x < 230 and 220 < player.rect.y < 480 and maplock.get(level_map_9) == "unlocked":
+                elif keys[pygame.K_SPACE] and 90 < player.rect.x < 230 and 220 < player.rect.y < 480 and maplock.get("level_map_9") == "unlocked":
                     self.setup_level(level_map_9)
                     self.current_level = level_map_9
 

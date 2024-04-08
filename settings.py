@@ -370,16 +370,16 @@ level_map_9: list[str] = [
 
 
 maplock = {
-    level_choice: "unlocked",
-    level_map_1: "unlocked",
-    level_map_2: "locked",
-    level_map_3: "locked",
-    level_map_4: "locked",
-    level_map_5: "locked",
-    level_map_6: "locked",
-    level_map_7: "locked",
-    level_map_8: "locked",
-    level_map_9: "locked"
+    "level_choice": "unlocked",
+    "level_map_1": "unlocked",
+    "level_map_2": "locked",
+    "level_map_3": "locked",
+    "level_map_4": "locked",
+    "level_map_5": "locked",
+    "level_map_6": "locked",
+    "level_map_7": "locked",
+    "level_map_8": "locked",
+    "level_map_9": "locked"
 }
 
 
