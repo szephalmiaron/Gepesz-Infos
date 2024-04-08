@@ -27,7 +27,7 @@ class Level:
     infos_finished: bool = False
     gepesz_finished: bool = False
 
-    def __init__(self, surface, infos, gepesz, cigany, font, clock):
+    def __init__(self, surface, infos, gepesz, cigany, font, clock, score):
         self.display_surface = surface
         self.tiles_dict = {}
         self.players = pygame.sprite.Group()
@@ -39,6 +39,7 @@ class Level:
         self.setup_level(self.current_level)
         self.game_font = font
         self.timer = clock
+        self.scorecounter = score
 
     def setup_level(self, layout):
         self.tiles = pygame.sprite.Group()
@@ -181,10 +182,12 @@ class Level:
 
     def pausemenu(self):
         self.menu_object.menudraw("pause")
-        self.timer.reset_timer()
+        self.scorecounter.score_print()
 
     def deathmenu(self):
         self.menu_object.menudraw("death")
+        self.timer.reset_timer()
+        self.scorecounter.score_print()
 
     def screen_fill(self, screen, BACKGROUND):
         screen.blit(BACKGROUND, (0, 0))

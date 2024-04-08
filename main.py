@@ -27,7 +27,8 @@ SPEED = 5
 
 clock = pygame.time.Clock()
 timer = Timer(screen, game_font, (500, 100, 200, 100), clock)
-level = Level(screen, infos, gepesz, cigany, game_font, timer)
+score = Score(screen, game_font, (300, 100, 200, 100))
+level = Level(screen, infos, gepesz, cigany, game_font, timer, score)
 
 BACKGROUND = pygame.image.load(level.background_image).convert()
 past_level = level.current_level 
