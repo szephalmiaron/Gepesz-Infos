@@ -70,12 +70,22 @@ class Menu:
 
         self.all_buttons.draw(self.screen)
         self.checkcollision()
+
+    def winscreen(self):
+        self.screen.fill((0, 0, 255))
+        home_button = Menu_Buttons((WIDTH//2, self.POS_1_2), "home")
+        self.all_buttons.add(home_button)
+        quit_button = Menu_Buttons((WIDTH//2, self.POS_2_2), "quit")
+        self.all_buttons.add(quit_button)
+
     
     def menudraw(self, menutype):
         if menutype == "pause":
             self.pausemenu()
         elif menutype == "death":
             self.deathmenu()
+        elif menutype == "win":
+            self.winscreen()
 
     def delete_all(self):
         for button in self.all_buttons:
