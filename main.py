@@ -28,7 +28,8 @@ SPEED = 5
 
 clock = pygame.time.Clock()
 timer = Timer(screen, game_font, (500, 100, 200, 100), clock)
-level = Level(screen, infos, gepesz, cigany, game_font, timer)
+scorer = Scorer(screen, game_font, (300, 100, 200, 100))
+level = Level(screen, infos, gepesz, cigany, game_font, timer, scorer)
 
 BACKGROUND = pygame.image.load(level.background_image).convert()
 past_level = level.current_level 
@@ -63,9 +64,10 @@ while RUNNING:
         if event.type == event_death:
             alive = False
         if event.type == event_home:
-            level.current_level = level_choice
+            paused = False    
+            alive = True
             level.home()
-            paused = False
+    
     
     if level.current_level == level_choice:
         screen.blit((game_font.render("A szóköz lenyomásával be tudsz menni egy ajtón", True, (0, 0, 0))), (50, 600, 50, 50))
@@ -73,9 +75,6 @@ while RUNNING:
         screen.blit((game_font_2.render("A gombbal és a kapcsolóval irányítható a lift", True, (0, 0, 0))), (900, 800, 50, 50))
         screen.blit((game_font_2.render("Ha oldalról nekedjön az ellenség akkor, meghalsz", True, (0, 0, 0))), (300, 370, 50, 50))
         screen.blit((game_font_2.render("Ha ráugrassz a fejére, akkor az ellenség hal meg", True, (0, 0, 0))), (300, 400))
-
-
-
     if paused:
         level.pausemenu()
     elif not alive:

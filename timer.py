@@ -1,3 +1,4 @@
+import time
 import pygame
 
 class Timer():
@@ -14,3 +15,22 @@ class Timer():
     
     def reset_timer(self):
         self.current_time -= self.current_time
+
+    def get_time(self):
+        return self.current_time
+
+class Scorer():
+    def __init__(self, surface, font, rect):
+        self.surface = surface
+        self.font = font
+        self.scorer_rect = rect
+        self.score = 0
+    
+    def add_score(self, amount):
+        self.score += amount
+
+    def win(self, time):
+        self.score += (90-int(time))
+
+    def print_score(self):
+        self.surface.blit((self.font.render(f"Pontszám: {self.score}", True, (0, 0, 0))), self.scorer_rect)

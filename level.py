@@ -27,7 +27,7 @@ class Level:
     gepesz_finished: bool = False
     enemy_facing_left: bool = True
 
-    def __init__(self, surface, infos, gepesz, cigany, font, clock):
+    def __init__(self, surface, infos, gepesz, cigany, font, clock, scorer):
         self.display_surface = surface
         self.tiles_dict = {}
         self.players = pygame.sprite.Group()
@@ -39,6 +39,7 @@ class Level:
         self.setup_level(self.current_level)
         self.game_font = font
         self.timer = clock
+        self.scorer = scorer
 
     def setup_level(self, layout):
         self.tiles = pygame.sprite.Group()
@@ -196,10 +197,13 @@ class Level:
 
     def pausemenu(self):
         self.menu_object.menudraw("pause")
+        self.scorer.print_score()
+        self.scorer.win(self.timer.get_time())
 
     def deathmenu(self):
         self.menu_object.menudraw("death")
         self.timer.reset_timer()
+        self.scorer.print_score()
 
     def screen_fill(self, screen, BACKGROUND):
         screen.blit(BACKGROUND, (0, 0))
@@ -326,6 +330,19 @@ class Level:
                 enemy.kill()
             self.infos_finished = False
             self.gepesz_finished = False
+            self.scorer.win(self.timer.get_time())
+
+    def home(self):
+        self.setup_level(level_choice)
+        self.timer.reset_timer()
+        self.background_image = "graphics/map/palyavalasztos(folyoso).png"
+        self.switch_on = False
+        self.switch_pic = "graphics/temp/switch_off.png"
+        self.current_level = level_choice
+        for enemy in self.enemies:
+            enemy.kill()
+        self.infos_finished = False
+        self.gepesz_finished = False
 
     def vertical_collision(self):
 
@@ -383,6 +400,7 @@ class Level:
             for enemy in self.enemies:
                 if enemy.rect.colliderect(player.rect):
                     enemy.kill()
+                    self.scorer.add_score(50)
 
         for player in self.players:
             if player.on_ground and player.direction.y < 0 or player.direction.y > 1:
