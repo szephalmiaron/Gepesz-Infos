@@ -26,6 +26,16 @@ class Level:
     infos_finished: bool = False
     gepesz_finished: bool = False
     enemy_facing_left: bool = True
+    level_1_complete: bool = False
+    level_2_complete: bool = False
+    level_3_complete: bool = False
+    level_4_complete: bool = False
+    level_5_complete: bool = False
+    level_6_complete: bool = False
+    level_7_complete: bool = False
+    level_8_complete: bool = False
+    level_9_complete: bool = False
+    game_finished: bool = False
 
     def __init__(self, surface, infos, gepesz, cigany, font, clock, scorer):
         self.display_surface = surface
@@ -187,6 +197,10 @@ class Level:
         elif self.current_level == level_map_1:
             self.lift_max = 650
             self.background_image = "graphics/map/terem_hatter.png"
+        elif self.current_level == level_map_3:
+            self.lift_max = 257
+        elif self.current_level == level_map_5:
+            self.lift_max = 195
         elif self.current_level == level_map_7:
             self.lift_max = 610
             self.background_image = "graphics/map/jedlik_epulet.png"
@@ -202,6 +216,12 @@ class Level:
     def deathmenu(self):
         self.menu_object.menudraw("death")
         self.timer.reset_timer()
+        self.scorer.print_score()
+        self.gepesz_alive = True
+        self.infos_alive = True
+
+    def endmenu(self):
+        self.menu_object.menudraw("end")
         self.scorer.print_score()
 
     def screen_fill(self, screen, BACKGROUND):
@@ -317,8 +337,42 @@ class Level:
                     self.current_level = level_map_9
                     self.background_image = "graphics/map/jedlik_epulet.png"
 
+    def complete(self) -> None:
+        if self.current_level == level_map_1:
+            self.level_1_complete = True
+
+        if self.current_level == level_map_2:
+            self.level_2_complete = True
+            
+        if self.current_level == level_map_3:
+            self.level_3_complete = True
+
+        if self.current_level == level_map_4:
+            self.level_4_complete = True
+
+        if self.current_level == level_map_5:
+            self.level_5_complete = True
+
+        if self.current_level == level_map_6:
+            self.level_6_complete = True
+
+        if self.current_level == level_map_7:
+            self.level_7_complete = True
+
+        if self.current_level == level_map_8:
+            self.level_8_complete = True
+
+        if self.current_level == level_map_9:
+            self.level_9_complete = True
+        
+        if self.level_1_complete and self.level_2_complete and self.level_3_complete and self.level_4_complete and self.level_5_complete and self.level_6_complete and self.level_7_complete and self.level_8_complete and self.level_9_complete:
+            self.game_finished = True
+
+            
+
     def finish(self) -> None:
         if self.infos_finished and self.gepesz_finished:
+            self.complete()
             self.setup_level(level_choice)
             self.scorer.win(int(self.timer.current_time))
             self.timer.reset_timer()

@@ -71,11 +71,20 @@ class Menu:
         self.all_buttons.draw(self.screen)
         self.checkcollision()
     
+    def endmenu(self):
+        self.screen.fill((0,0,255))
+        quit_button = Menu_Buttons((WIDTH//2, self.POS_2_3), "quit")
+        self.all_buttons.add(quit_button)
+        self.all_buttons.draw(self.screen)
+        self.checkcollision()
+
     def menudraw(self, menutype):
         if menutype == "pause":
             self.pausemenu()
         elif menutype == "death":
             self.deathmenu()
+        elif menutype == "end":
+            self.endmenu()
 
     def delete_all(self):
         for button in self.all_buttons:
