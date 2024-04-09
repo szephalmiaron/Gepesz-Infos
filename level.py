@@ -198,7 +198,6 @@ class Level:
     def pausemenu(self):
         self.menu_object.menudraw("pause")
         self.scorer.print_score()
-        self.scorer.win(self.timer.get_time())
 
     def deathmenu(self):
         self.menu_object.menudraw("death")
@@ -321,6 +320,7 @@ class Level:
     def finish(self) -> None:
         if self.infos_finished and self.gepesz_finished:
             self.setup_level(level_choice)
+            self.scorer.win(int(self.timer.current_time))
             self.timer.reset_timer()
             self.background_image = "graphics/map/palyavalasztos(folyoso).png"
             self.switch_on = False
@@ -330,20 +330,6 @@ class Level:
                 enemy.kill()
             self.infos_finished = False
             self.gepesz_finished = False
-            self.scorer.win(self.timer.get_time())
-
-    def home(self):
-        self.setup_level(level_choice)
-        self.timer.reset_timer()
-        self.background_image = "graphics/map/palyavalasztos(folyoso).png"
-        self.switch_on = False
-        self.switch_pic = "graphics/temp/switch_off.png"
-        self.current_level = level_choice
-        for enemy in self.enemies:
-            enemy.kill()
-        self.infos_finished = False
-        self.gepesz_finished = False
-
     def vertical_collision(self):
 
         for player in self.players:

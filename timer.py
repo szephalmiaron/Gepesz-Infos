@@ -29,8 +29,8 @@ class Scorer():
     def add_score(self, amount):
         self.score += amount
 
-    def win(self, time):
-        self.score += (90-int(time))
+    def win(self, idő: int):
+        self.score += (90 - idő)
 
     def print_score(self):
         self.surface.blit((self.font.render(f"Pontszám: {self.score}", True, (0, 0, 0))), self.scorer_rect)
