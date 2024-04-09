@@ -7,7 +7,7 @@ class Cigany(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft = pos)
         self.frame_index: float = 0
         self.direction = pygame.math.Vector2(0,0)
-        self.speed: int = 5
+        self.speed: int = 2
 
     def change_image(self, facing_left):
         if facing_left is False:

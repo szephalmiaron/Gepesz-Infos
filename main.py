@@ -18,6 +18,7 @@ infos = Infos((WIDTH / 2, HEIGHT / 2 - 50))
 gepesz = Gepesz((WIDTH / 2, HEIGHT / 2))
 cigany = Cigany((WIDTH / 2, HEIGHT / 2))
 game_font: pygame.font.Font = pygame.font.Font(None, 60)
+game_font_2: pygame.font.Font = pygame.font.Font(None, 35)
 
 
 
@@ -63,9 +64,17 @@ while RUNNING:
         if event.type == event_death:
             alive = False
         if event.type == event_home:
-            paused = False
+            paused = False    
             alive = True
             level.home()
+    
+    
+    if level.current_level == level_choice:
+        screen.blit((game_font.render("A szóköz lenyomásával be tudsz menni egy ajtón", True, (0, 0, 0))), (50, 600, 50, 50))
+    if level.current_level == level_map_1:
+        screen.blit((game_font_2.render("A gombbal és a kapcsolóval irányítható a lift", True, (0, 0, 0))), (900, 800, 50, 50))
+        screen.blit((game_font_2.render("Ha oldalról nekedjön az ellenség akkor, meghalsz", True, (0, 0, 0))), (300, 370, 50, 50))
+        screen.blit((game_font_2.render("Ha ráugrassz a fejére, akkor az ellenség hal meg", True, (0, 0, 0))), (300, 400))
     if paused:
         level.pausemenu()
     elif not alive:
