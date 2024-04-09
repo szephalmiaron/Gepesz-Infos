@@ -70,7 +70,7 @@ class Level:
                     self.cigany.save_original_pos((x, y))
                 elif cell == "W":
                     x = coll_index * tile_size
-                    y = row_index * tile_size
+                    y = row_index * tile_size + 12
                     tile_X = Water((x, y))
                     self.tiles.add(tile_X)
                 elif cell == "L":
@@ -164,13 +164,14 @@ class Level:
         self.tiles.draw(self.display_surface)
         self.enemy_movement()
         self.map_choose()
+        self.finish()
         self.timer.time_print()
         if self.current_level == level_choice:
             self.lift_max = 450
             self.background_image = "graphics/map/palyavalasztos(folyoso).png"
         elif self.current_level == level_map_1:
             self.lift_max = 650
-            self.background_image = "graphics/map/jedlik_epulet.png"
+            self.background_image = "graphics/map/terem_hatter.png"
         elif self.current_level == level_map_7:
             self.lift_max = 610
             self.background_image = "graphics/map/jedlik_epulet.png"
@@ -181,10 +182,10 @@ class Level:
 
     def pausemenu(self):
         self.menu_object.menudraw("pause")
-        self.timer.reset_timer()
 
     def deathmenu(self):
         self.menu_object.menudraw("death")
+        self.timer.reset_timer()
 
     def screen_fill(self, screen, BACKGROUND):
         screen.blit(BACKGROUND, (0, 0))
@@ -254,7 +255,9 @@ class Level:
                         player.rect.left = sprite.rect.right
                     elif player.direction.x > 0:
                         player.rect.right = sprite.rect.left
-
+    def map_load(self):
+        self.background_image = "graphics/map/terem_hatter.png"
+        self.timer.reset_timer()
     def map_choose(self) -> None:
         for player in self.players:
             if self.current_level == level_choice:
@@ -262,31 +265,52 @@ class Level:
                 if keys[pygame.K_SPACE] and 108 < player.rect.x < 250 and 800 < player.rect.y < 900:
                     self.setup_level(level_map_1)
                     self.current_level = level_map_1
-                    self.background_image = "graphics/map/terem_hatter.png"
+                    self.map_load()
                 elif keys[pygame.K_SPACE] and 540 < player.rect.x < 680 and 680 < player.rect.y < 900:
                     self.setup_level(level_map_2)
                     self.current_level = level_map_2
+                    self.map_load()
                 elif keys[pygame.K_SPACE] and 990 < player.rect.x < 1130 and 680 < player.rect.y < 900:
                     self.setup_level(level_map_3)
                     self.current_level = level_map_3
+                    self.map_load()
                 elif keys[pygame.K_SPACE] and 1410 < player.rect.x < 1540 and 680 < player.rect.y < 900:
                     self.setup_level(level_map_4)
                     self.current_level = level_map_4
+                    self.map_load()
                 elif keys[pygame.K_SPACE] and 1580 < player.rect.x < 1730 and 220 < player.rect.y < 480:
                     self.setup_level(level_map_5)
                     self.current_level = level_map_5
+                    self.map_load()
                 elif keys[pygame.K_SPACE] and 1190 < player.rect.x < 1340 and 220 < player.rect.y < 480:
                     self.setup_level(level_map_6)
                     self.current_level = level_map_6
+                    self.map_load()
                 elif keys[pygame.K_SPACE] and 800 < player.rect.x < 940 and 220 < player.rect.y < 480:
                     self.setup_level(level_map_7)
                     self.current_level = level_map_7
+                    self.map_load()
                 elif keys[pygame.K_SPACE] and 430 < player.rect.x < 570 and 220 < player.rect.y < 480:
                     self.setup_level(level_map_8)
                     self.current_level = level_map_8
+                    self.map_load()
                 elif keys[pygame.K_SPACE] and 90 < player.rect.x < 230 and 220 < player.rect.y < 480:
                     self.setup_level(level_map_9)
                     self.current_level = level_map_9
+                    self.background_image = "graphics/map/jedlik_epulet.png"
+
+    def finish(self) -> None:
+        if self.infos_finished and self.gepesz_finished:
+            self.setup_level(level_choice)
+            self.timer.reset_timer()
+            self.background_image = "graphics/map/palyavalasztos(folyoso).png"
+            self.switch_on = False
+            self.switch_pic = "graphics/temp/switch_off.png"
+            self.current_level = level_choice
+            for enemy in self.enemies:
+                enemy.kill()
+            self.infos_finished = False
+            self.gepesz_finished = False
 
     def vertical_collision(self):
 
@@ -297,7 +321,11 @@ class Level:
                 if isinstance(sprite, Barrier):
                     continue
                 if isinstance(sprite, Water):
-                    continue
+                    if sprite.rect.colliderect(player.rect):
+                        if player == self.infos:
+                            self.infos_alive = False
+                        elif player == self.gepesz:
+                            self.gepesz_alive = False
                 if isinstance(sprite, Ajtó):
                     continue
                 if isinstance(sprite, Finished_check):
