@@ -79,6 +79,10 @@ while RUNNING:
         level.pausemenu()
     elif not alive:
         level.deathmenu()
+    elif level.game_finished:
+        level.endmenu()
+        screen.blit((game_font.render("Gratulálok!", True, (0, 0, 0))), ((WIDTH / 2) - 60, HEIGHT / 2 -150))
+        screen.blit((game_font.render("Sikeresen kijátszottátok a játékot!", True, (0, 0, 0))), ((WIDTH / 2) - 260, (HEIGHT / 2) - 100))
     elif not paused and alive:
         level.run()
 
