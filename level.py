@@ -3,7 +3,6 @@ from tiles import *
 from settings import *
 from player import Gepesz
 from infos import Infos
-from enemy import Cigany
 from menu import Menu
 from events import *
 from timer import *
@@ -26,6 +25,7 @@ class Level:
     background_image: int = "graphics/map/palyavalasztos(folyoso).png"
     infos_finished: bool = False
     gepesz_finished: bool = False
+    enemy_facing_left: bool = True
 
     def __init__(self, surface, infos, gepesz, cigany, font, clock):
         self.display_surface = surface
@@ -144,6 +144,19 @@ class Level:
             enemy.rect.topleft = (enemy.original_pos)
         self.switch_on = False
         self.switch_pic = "graphics/temp/switch_off.png"
+        self.timer.reset_timer()
+
+    def home(self):
+        self.setup_level(level_choice)
+        self.timer.reset_timer()
+        self.background_image = "graphics/map/palyavalasztos(folyoso).png"
+        self.switch_on = False
+        self.switch_pic = "graphics/temp/switch_off.png"
+        self.current_level = level_choice
+        for enemy in self.enemies:
+            enemy.kill()
+        self.infos_finished = False
+        self.gepesz_finished = False
 
     def lift_up(self):
         for i in self.full_lift:
@@ -165,6 +178,7 @@ class Level:
         self.enemy_movement()
         self.map_choose()
         self.finish()
+        self.cigany.change_image(self.enemy_facing_left)
         self.timer.time_print()
         if self.current_level == level_choice:
             self.lift_max = 450
@@ -192,23 +206,23 @@ class Level:
 
     def enemy_movement(self):
         for enemy in self.enemies:
-            if enemy.facing_left:
+            if self.enemy_facing_left:
                 enemy.rect.x -= enemy.speed
             else:
                 enemy.rect.x += enemy.speed
             for sprite in self.tiles.sprites():
                 if isinstance(sprite, Barrier):
                     if sprite.rect.colliderect(enemy.rect):
-                        if enemy.facing_left:
-                            enemy.facing_left = False
+                        if self.enemy_facing_left:
+                            self.enemy_facing_left = False
                         else:
-                            enemy.facing_left = True
+                            self.enemy_facing_left = True
                 if isinstance(sprite, Tile):
                     if sprite.rect.colliderect(enemy.rect):
-                        if enemy.facing_left:
-                            enemy.facing_left = False
+                        if self.enemy_facing_left:
+                            self.enemy_facing_left = False
                         else:
-                            enemy.facing_left = True
+                            self.enemy_facing_left = True
 
     def horizontal_collision(self):
         for player in self.players:
@@ -258,6 +272,7 @@ class Level:
     def map_load(self):
         self.background_image = "graphics/map/terem_hatter.png"
         self.timer.reset_timer()
+
     def map_choose(self) -> None:
         for player in self.players:
             if self.current_level == level_choice:

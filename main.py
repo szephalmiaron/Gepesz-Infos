@@ -13,6 +13,7 @@ pygame.font.init()
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
+
 infos = Infos((WIDTH / 2, HEIGHT / 2 - 50))  
 gepesz = Gepesz((WIDTH / 2, HEIGHT / 2))
 cigany = Cigany((WIDTH / 2, HEIGHT / 2))
@@ -62,7 +63,7 @@ while RUNNING:
             alive = False
         if event.type == event_home:
             level.current_level = level_choice
-            level.level_reset()
+            level.home()
             paused = False
     if paused:
         level.pausemenu()
