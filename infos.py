@@ -7,28 +7,35 @@ class Infos(pygame.sprite.Sprite):
         super().__init__()
 
         self.image = pygame.image.load(
-            "graphics/temp/infos/infosanimacio1.png").convert_alpha()
+            "graphics/characters/infos/infosanimacio2(default).png").convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.frame_index: float = 0
         self.direction = pygame.math.Vector2(0, 0)
         self.speed: int = 5
         self.gravity: float = 0.6
         self.jump_speed: float = -14
-        self.facing_left: bool = True
+        self.facing_left: bool = False
         self.on_ground: bool = False
         self.on_ceiling: bool = False
         self.on_left: bool = False
         self.on_right: bool = False
-
+        
     def get_input(self) -> None:
         keys: List[bool] = pygame.key.get_pressed()
-
+        image_path = "graphics/characters/infos/infosanimacio2(default).png"
         if keys[pygame.K_RIGHT]:
             self.direction.x = 1
             self.facing_left = False
+            loaded_image = pygame.image.load(image_path)
+            converted_image = loaded_image.convert_alpha()
+            self.image = loaded_image
         elif keys[pygame.K_LEFT]:
             self.direction.x = -1
             self.facing_left = True
+            loaded_image = pygame.image.load(image_path)
+            converted_image = loaded_image.convert_alpha()
+            flipped_image = pygame.transform.flip(converted_image, True, False)
+            self.image = flipped_image
         else:
             self.direction.x = 0
 
