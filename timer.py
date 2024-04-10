@@ -30,7 +30,8 @@ class Scorer():
         self.score += amount
 
     def win(self, idő: int):
-        self.score += (90 - idő)
+        if idő < 91:
+            self.score += (90 - idő)
 
     def print_score(self):
         self.surface.blit((self.font.render(f"Pontszám: {self.score}", True, (0, 0, 0))), self.scorer_rect)
