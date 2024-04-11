@@ -1,12 +1,14 @@
+from typing import List, Any
 import pygame
+from pygame.sprite import Group, Sprite
 from tiles import *
 from settings import *
 from player import Gepesz
 from infos import Infos
+from enemy import Enemy
 from menu import Menu
 from events import *
 from timer import *
-
 
 class Level:
     button_pos_offset = 23
@@ -15,14 +17,14 @@ class Level:
     button_onoff_infos: bool = False
     button_onoff_gepesz: bool = False
     full_lift: list[Lift] = []
-    lift_original: tuple = 0, 0
+    lift_original: int = 0
     switch_on: bool = False
     infos_alive: bool = True
     gepesz_alive: bool = True
     switch_pic: str = "graphics/temp/switch_off.png"
     lift_max: int = 0
     current_level: list[str] = level_choice
-    background_image: int = "graphics/map/palyavalasztos(folyoso).png"
+    background_image: str = "graphics/map/palyavalasztos(folyoso).png"
     infos_finished: bool = False
     gepesz_finished: bool = False
     enemy_facing_left: bool = True
@@ -37,22 +39,22 @@ class Level:
     level_9_complete: bool = False
     game_finished: bool = False
 
-    def __init__(self, surface, infos, gepesz, cigany, font, clock, scorer):
+    def __init__(self, surface: pygame.Surface, infos: Infos, gepesz: Gepesz, opp: Enemy , font: pygame.font.Font, clock: Timer, scorer: Scorer):
         self.display_surface = surface
         self.tiles_dict = {}
-        self.players = pygame.sprite.Group()
+        self.players: List[Sprite] = Group() # type: ignore
         self.infos = infos
         self.gepesz = gepesz
-        self.enemies = pygame.sprite.Group()
-        self.cigany = cigany
+        self.enemies: List[Sprite] = Group() # type: ignore
+        self.opp = opp
         self.menu_object = Menu(surface)
         self.setup_level(self.current_level)
         self.game_font = font
         self.timer = clock
         self.scorer = scorer
 
-    def setup_level(self, layout):
-        self.tiles = pygame.sprite.Group()
+    def setup_level(self, layout: list[str]):
+        self.tiles: pygame.sprite.Group = pygame.sprite.Group() # type: ignore
 
         for row_index, row in enumerate(layout):
             for coll_index, cell in enumerate(row):
@@ -60,99 +62,99 @@ class Level:
                     x = coll_index * tile_size
                     y = row_index * tile_size
                     tile_X = Tile((x, y))
-                    self.tiles.add(tile_X)
+                    self.tiles.add(tile_X) # type: ignore
                 elif cell == "I":
                     x = coll_index * tile_size
                     y = row_index * tile_size
                     self.infos.rect.topleft = (x, y)
-                    self.players.add(self.infos)
+                    self.players.add(self.infos) # type: ignore
                     self.infos.save_original_pos((x, y))
                 elif cell == "G":
                     x = coll_index * tile_size
                     y = row_index * tile_size
                     self.gepesz.rect.topleft = (x, y)
-                    self.players.add(self.gepesz)
+                    self.players.add(self.gepesz) # type: ignore
                     self.gepesz.save_original_pos((x, y))
                 elif cell == "E":
                     x = coll_index * tile_size
                     y = row_index * tile_size - 33
-                    self.cigany.rect.topleft = (x, y)
-                    self.enemies.add(self.cigany)
-                    self.cigany.save_original_pos((x, y))
+                    self.opp.rect.topleft = (x, y)
+                    self.enemies.add(self.opp) # type: ignore
+                    self.opp.save_original_pos((x, y))
                 elif cell == "W":
                     x = coll_index * tile_size
                     y = row_index * tile_size + 12
                     tile_X = Water((x, y))
-                    self.tiles.add(tile_X)
+                    self.tiles.add(tile_X) # type: ignore
                 elif cell == "L":
                     x = coll_index * tile_size
                     y = row_index * tile_size
                     self.lift = Lift((x, y))
-                    self.tiles.add(self.lift)
+                    self.tiles.add(self.lift) # type: ignore
                     self.full_lift.append(self.lift)
                     self.lift_original = self.lift.rect.y
                 elif cell == "B":
                     x = coll_index * tile_size
                     y = row_index * tile_size + self.button_pos_offset
                     self.button = Button((x, y))
-                    self.tiles.add(self.button)
+                    self.tiles.add(self.button) # type: ignore
                     self.button_original_pos = self.button.rect.y
                 elif cell == "K":
                     x = coll_index * tile_size
                     y = row_index * tile_size
                     self.switch = Switch((x, y), self.switch_pic)
-                    self.tiles.add(self.switch)
+                    self.tiles.add(self.switch) # type: ignore
                 elif cell == "A":
                     x = coll_index * tile_size
                     y = row_index * tile_size
                     self.barrier = Barrier((x, y))
-                    self.tiles.add(self.barrier)
+                    self.tiles.add(self.barrier) # type: ignore
                 elif cell == "D":
                     x = coll_index * tile_size
                     y = row_index * tile_size
                     self.barrier = Asztal((x, y))
-                    self.tiles.add(self.barrier)
+                    self.tiles.add(self.barrier) # type: ignore
                 elif cell == "C":
                     x = coll_index * tile_size
                     y = row_index * tile_size
                     self.actiave = Activate((x, y))
-                    self.tiles.add(self.actiave)
+                    self.tiles.add(self.actiave) # type: ignore
                 elif cell == "T":
                     x = coll_index * tile_size
                     y = row_index * tile_size
                     self.csempe = Csempe((x, y))
-                    self.tiles.add(self.csempe)
+                    self.tiles.add(self.csempe) # type: ignore
                 elif cell == "P":
                     x = coll_index * tile_size
                     y = row_index * tile_size
                     self.parketta = Parketta((x, y))
-                    self.tiles.add(self.parketta)
+                    self.tiles.add(self.parketta) # type: ignore
                 elif cell == "s":
                     x = coll_index * tile_size
                     y = row_index * tile_size
                     self.szek = Szék((x, y))
-                    self.tiles.add(self.szek)
+                    self.tiles.add(self.szek) # type: ignore
                 elif cell == "i":
                     x = coll_index * tile_size
                     y = row_index * tile_size
                     self.szek = Finished_check((x, y))
-                    self.tiles.add(self.szek)
+                    self.tiles.add(self.szek) # type: ignore
                 elif cell == "F":
                     x = coll_index * tile_size
                     y = row_index * tile_size - 15
                     self.szek = Ajtó((x, y))
-                    self.tiles.add(self.szek)
+                    self.tiles.add(self.szek) # type: ignore
                 elif cell == "H":
                     x = coll_index * tile_size
                     y = row_index * tile_size
                     self.platform = Platform((x, y))
-                    self.tiles.add(self.platform)
+                    self.tiles.add(self.platform) # type: ignore
 
     def level_reset(self):
         for player in self.players:
-            player.rect.topleft = (player.original_pos)
+            player.rect.topleft = (player.original_pos) # type: ignore
         for enemy in self.enemies:
-            enemy.rect.topleft = (enemy.original_pos)
+            enemy.rect.topleft = (enemy.original_pos) # type: ignore
         self.switch_on = False
         self.switch_pic = "graphics/temp/switch_off.png"
         self.timer.reset_timer()
@@ -189,7 +191,7 @@ class Level:
         self.enemy_movement()
         self.map_choose()
         self.finish()
-        self.cigany.change_image(self.enemy_facing_left)
+        self.opp.change_image(self.enemy_facing_left)
         self.timer.time_print()
         if self.current_level == level_choice:
             self.lift_max = 450
@@ -224,7 +226,7 @@ class Level:
         self.menu_object.menudraw("end")
         self.scorer.print_score()
 
-    def screen_fill(self, screen, BACKGROUND):
+    def screen_fill(self, screen: pygame.Surface, BACKGROUND: pygame.Surface):
         screen.blit(BACKGROUND, (0, 0))
 
     def enemy_movement(self):
@@ -249,7 +251,7 @@ class Level:
 
     def horizontal_collision(self):
         for player in self.players:
-            player.rect.x += player.direction.x * player.speed
+            player.rect.x += player.direction.x * player.speed # type: ignore
 
             for sprite in self.tiles.sprites():
                 if isinstance(sprite, Water):
