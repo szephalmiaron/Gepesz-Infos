@@ -1,4 +1,3 @@
-from typing import List
 import pygame
 
 
@@ -19,9 +18,10 @@ class Infos(pygame.sprite.Sprite):
         self.on_ceiling: bool = False
         self.on_left: bool = False
         self.on_right: bool = False
+        self.original_pos: tuple[int, int] = (0, 0)
         
     def get_input(self) -> None:
-        keys: List[bool] = pygame.key.get_pressed()
+        keys: pygame.key.ScancodeWrapper = pygame.key.get_pressed()
         image_path = "graphics/characters/infos/infosanimacio2(default).png"
         if keys[pygame.K_RIGHT]:
             self.direction.x = 1
@@ -44,12 +44,12 @@ class Infos(pygame.sprite.Sprite):
 
     def apply_gravity(self) -> None:
         self.direction.y += self.gravity
-        self.rect.y += self.direction.y
+        self.rect.y += round(self.direction.y)
 
     def jump(self) -> None:
         self.direction.y = self.jump_speed
 
-    def update(self) -> None:
+    def update(self) -> None: # type: ignore
         self.get_input()
 
     def save_original_pos(self, pos: tuple[int, int]):

@@ -1,9 +1,8 @@
-import time
 import pygame
 
 class Timer():
     current_time = 0
-    def __init__(self, surface, font, rect, clock):
+    def __init__(self, surface: pygame.Surface, font: pygame.font.Font, rect: tuple[int, int, int, int], clock: pygame.time.Clock):
         self.surface = surface
         self.font = font
         self.timer_rect = rect
@@ -20,13 +19,13 @@ class Timer():
         return self.current_time
 
 class Scorer():
-    def __init__(self, surface, font, rect):
+    def __init__(self, surface: pygame.Surface, font: pygame.font.Font, rect: tuple[int, int, int, int]):
         self.surface = surface
         self.font = font
         self.scorer_rect = rect
         self.score = 0
     
-    def add_score(self, amount):
+    def add_score(self, amount: int):
         self.score += amount
 
     def win(self, idő: int):

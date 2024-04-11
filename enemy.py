@@ -7,6 +7,7 @@ class Enemy(pygame.sprite.Sprite):
         self.frame_index: float = 0
         self.direction = pygame.math.Vector2(0,0)
         self.speed: int = 2
+        self.original_pos: tuple[int, int] = (0, 0)
 
     def change_image(self, facing_left: bool):
         if facing_left is False:
@@ -15,4 +16,4 @@ class Enemy(pygame.sprite.Sprite):
             self.image = pygame.transform.flip(pygame.image.load("graphics/characters/enemy_uveggel.png").convert_alpha(), True, False)
 
     def save_original_pos(self, pos: tuple[int, int]):
-        self.original_pos: tuple[int, int] = pos
+        self.original_pos = pos
