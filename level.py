@@ -215,7 +215,7 @@ class Level:
         self.menu_object.delete_all()
 
     def pausemenu(self):
-        self.menu_object.menudraw("pause") 
+        self.menu_object.menudraw("pause")
         self.scorer.print_score()
 
     def deathmenu(self):
