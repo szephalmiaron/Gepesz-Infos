@@ -1,14 +1,15 @@
 from typing import List
 import pygame
-from pygame.sprite import Group, Sprite
-from tiles import *
-from settings import *
+from pygame.rect import Rect
+from pygame.sprite import Sprite
+from tiles import Activate, Ajtó, Asztal, Barrier, Button, Csempe, Lift, Parketta, Platform, Switch, Szék, Tile, Water, Finished_check
+from settings import HEIGHT, WIDTH, level_choice, level_map_1, level_map_2, level_map_3, level_map_4, level_map_5, level_map_6, level_map_7, level_map_8, level_map_9, tile_size
 from player import Gepesz
 from infos import Infos
 from enemy import Enemy
 from menu import Menu
-from events import *
-from timer import *
+from events import event_death
+from timer import Scorer, Timer
 
 class Level:
     button_pos_offset = 23
@@ -38,26 +39,25 @@ class Level:
     level_8_complete: bool = False
     level_9_complete: bool = False
     game_finished: bool = False
-    enemy = Enemy((int(WIDTH / 2), int(HEIGHT / 2)))
-    infos = Infos((int(WIDTH / 2), int(HEIGHT / 2 - 50))) 
-    gepesz = Gepesz((int(WIDTH / 2), int(HEIGHT / 2)))
+    enemy: Enemy = Enemy((int(WIDTH / 2), int(HEIGHT / 2)))
+    infos: Infos = Infos((int(WIDTH / 2), int(HEIGHT / 2 - 50))) 
+    gepesz: Gepesz = Gepesz((int(WIDTH / 2), int(HEIGHT / 2)))
 
     def __init__(self, surface: pygame.Surface, infos: Infos, gepesz: Gepesz, opp: Enemy , font: pygame.font.Font, clock: Timer, scorer: Scorer):
         self.display_surface = surface
         self.tiles_dict = {}
-        self.players: List[Sprite] = pygame.sprite.Group() # type: ignore
-        self.infos = infos
-        self.gepesz = gepesz
-        self.enemies: List[Sprite] = pygame.sprite.Group() # type: ignore
-        self.opp = opp
+        self.players: pygame.sprite.Group[Sprite] = pygame.sprite.Group() # type: ignore
+        self.infos: Infos = infos
+        self.gepesz: Gepesz = gepesz
+        self.enemy: Enemy = opp
         self.menu_object = Menu(surface)
         self.setup_level(self.current_level)
         self.game_font = font
         self.timer = clock
         self.scorer = scorer
 
-    def setup_level(self, layout: list[str]):
-        self.tiles: List[Sprite] = pygame.sprite.Group() # type: ignore
+    def setup_level(self, layout: List[str]):
+        self.tiles: pygame.sprite.Group[Sprite] = pygame.sprite.Group() # type: ignore
 
         for row_index, row in enumerate(layout):
             for coll_index, cell in enumerate(row):
@@ -81,9 +81,8 @@ class Level:
                 elif cell == "E":
                     x = coll_index * tile_size
                     y = row_index * tile_size - 33
-                    self.opp.rect.topleft = (x, y)
-                    self.enemies.add(self.opp) 
-                    self.opp.save_original_pos((x, y))
+                    self.enemy.rect.topleft = (x, y)
+                    self.enemy.save_original_pos((x, y))
                 elif cell == "W":
                     x = coll_index * tile_size
                     y = row_index * tile_size + 12
@@ -168,8 +167,7 @@ class Level:
         self.switch_on = False
         self.switch_pic = "graphics/temp/switch_off.png"
         self.current_level = level_choice
-        for enemy in self.enemies:
-            enemy.kill()
+        self.enemy.kill()
         self.infos_finished = False
         self.gepesz_finished = False
 
@@ -187,14 +185,14 @@ class Level:
         self.infos.update()
         self.gepesz.update() 
         self.players.draw(self.display_surface) 
-        self.enemies.draw(self.display_surface) 
+        self.enemy.draw(self.display_surface) 
         self.horizontal_collision()
         self.vertical_collision()
         self.tiles.draw(self.display_surface) 
         self.enemy_movement()
         self.map_choose()
         self.finish()
-        self.opp.change_image(self.enemy_facing_left)
+        self.enemy.change_image(self.enemy_facing_left)
         self.timer.time_print()
         if self.current_level == level_choice:
             self.lift_max = 450
@@ -233,30 +231,30 @@ class Level:
         screen.blit(BACKGROUND, (0, 0))
 
     def enemy_movement(self):
-        for enemy in self.enemies:
-            if self.enemy_facing_left:
-                enemy.rect.x -= enemy.speed 
-            else:
-                enemy.rect.x += enemy.speed 
-            for sprite in self.tiles.sprites(): 
-                if isinstance(sprite, Barrier):
-                    if sprite.rect.colliderect(enemy.rect): 
-                        if self.enemy_facing_left:
-                            self.enemy_facing_left = False
-                        else:
-                            self.enemy_facing_left = True
-                if isinstance(sprite, Tile):
-                    if sprite.rect.colliderect(enemy.rect): 
-                        if self.enemy_facing_left:
-                            self.enemy_facing_left = False
-                        else:
-                            self.enemy_facing_left = True
+        if self.enemy_facing_left:
+            self.enemy.rect.x -= self.enemy.speed 
+        else:
+            self.enemy.rect.x += self.enemy.speed 
+        for sprite in self.tiles.sprites(): 
+            if isinstance(sprite, Barrier):
+                if sprite.rect.colliderect(self.enemy.rect): 
+                    if self.enemy_facing_left:
+                        self.enemy_facing_left = False
+                    else:
+                        self.enemy_facing_left = True
+            if isinstance(sprite, Tile):
+                if sprite.rect.colliderect(self.enemy.rect): 
+                    if self.enemy_facing_left:
+                        self.enemy_facing_left = False
+                    else:
+                        self.enemy_facing_left = True
 
     def horizontal_collision(self):
-        for player in self.players:
+        player_list: List[Gepesz|Infos] = self.players.sprites() # type: ignore
+        for player in player_list:
             player.rect.x += player.direction.x * player.speed 
 
-            for sprite in self.tiles.sprites(): 
+            for sprite in self.tiles.sprites():
                 if isinstance(sprite, Water):
                     continue
                 if isinstance(sprite, Barrier):
@@ -264,47 +262,48 @@ class Level:
                 if isinstance(sprite, Ajtó):
                     continue
                 if isinstance(sprite, Activate):
-                    if sprite.rect.colliderect(player.rect): 
+                    if sprite.rect.colliderect(player.rect):
                         self.setup_level(level_map_1)
                         self.current_level = level_map_1
                         self.background_image = "graphics/map/terem_hatter.png"
 
                 if isinstance(sprite, Switch):
-                    if sprite.rect.colliderect(player.rect): 
-                        if player.direction.x > 0 and player.rect.left < sprite.rect.left: 
+                    if sprite.rect.colliderect(player.rect):
+                        if player.direction.x > 0 and player.rect.left < sprite.rect.left:
                             self.switch_on = True
-                        elif player.direction.x < 0 and player.rect.right > sprite.rect.right: 
+                        elif player.direction.x < 0 and player.rect.right > sprite.rect.right:
                             self.switch_on = False
                             self.switch_pic = "graphics/temp/switch_off.png"
                         else:
                             self.switch_on = False
-                    sprite.update_image(self.switch_on) 
-                for other_player in self.players:
-                    if other_player != player and player.rect.colliderect(other_player.rect): 
-                        if player.direction.x > 0: 
-                            player.rect.right = other_player.rect.left 
-                        elif player.direction.x < 0: 
-                            player.rect.left = other_player.rect.right 
-                for enemy in self.enemies:
-                    if enemy.rect.colliderect(player.rect): 
-                        if player == self.infos:
-                            self.infos_alive = False
-                        elif player == self.gepesz:
-                            self.gepesz_alive = False
+                    sprite.update_image(self.switch_on)
+                player_list: List[Gepesz|Infos] = self.players.sprites() # type: ignore
+                for other_player in player_list:
+                    if other_player != player and player.rect.colliderect(other_player.rect):
+                        if player.direction.x > 0:
+                            player.rect.right = other_player.rect.left
+                        elif player.direction.x < 0:
+                            player.rect.left = other_player.rect.right
+                if self.enemy.rect.colliderect(player.rect):
+                    if player == self.infos:
+                        self.infos_alive = False
+                    elif player == self.gepesz:
+                        self.gepesz_alive = False
 
-                if sprite.rect.colliderect(player.rect): 
-                    if player.direction.x < 0: 
-                        player.rect.left = sprite.rect.right 
-                    elif player.direction.x > 0: 
-                        player.rect.right = sprite.rect.left 
+                if sprite.rect.colliderect(player.rect):
+                    if player.direction.x < 0:
+                        player.rect.left = sprite.rect.right
+                    elif player.direction.x > 0:
+                        player.rect.right = sprite.rect.left
     def map_load(self):
         self.background_image = "graphics/map/terem_hatter.png"
         self.timer.reset_timer()
 
     def map_choose(self) -> None:
-        for player in self.players:
+        player_list: List[Gepesz|Infos] = self.players.sprites() # type: ignore 
+        for player in player_list:
             if self.current_level == level_choice:
-                keys: List[bool] = pygame.key.get_pressed() 
+                keys: pygame.key.ScancodeWrapper = pygame.key.get_pressed() 
                 if keys[pygame.K_SPACE] and 108 < player.rect.x < 250 and 800 < player.rect.y < 900: 
                     self.setup_level(level_map_1)
                     self.current_level = level_map_1
@@ -385,13 +384,12 @@ class Level:
             self.switch_on = False
             self.switch_pic = "graphics/temp/switch_off.png"
             self.current_level = level_choice
-            for enemy in self.enemies:
-                enemy.kill()
+            self.enemy.kill()
             self.infos_finished = False
             self.gepesz_finished = False
     def vertical_collision(self):
-
-        for player in self.players:
+        player_list: List[Gepesz|Infos] = self.players.sprites() # type: ignore 
+        for player in player_list:
             player.apply_gravity() 
 
             for sprite in self.tiles.sprites(): 
@@ -431,8 +429,9 @@ class Level:
                     elif player.direction.y < 0: 
                         player.rect.top = sprite.rect.bottom 
                         player.direction.y = 0 
-                        player.on_ceiling = True 
-            for other_player in self.players:
+                        player.on_ceiling = True
+             
+            for other_player in player_list:
                 if other_player != player and player.rect.colliderect(other_player.rect): 
                     if player.direction.y > 0: 
                         player.rect.bottom = other_player.rect.top 
@@ -442,16 +441,16 @@ class Level:
                         player.rect.top = other_player.rect.bottom 
                         player.direction.y = 0 
                         player.on_ceiling = True 
-            for enemy in self.enemies:
-                if enemy.rect.colliderect(player.rect): 
-                    enemy.kill() 
-                    self.scorer.add_score(50) 
+            if self.enemy.rect.colliderect(player.rect): 
+                self.enemy.kill() 
+                self.scorer.add_score(50) 
 
-        for player in self.players:
+        # player_list: List[Gepesz|Infos] = self.players.sprites() # type: ignore
+        # for player in player_list:
             if player.on_ground and player.direction.y < 0 or player.direction.y > 1: 
-                player.on_ground = False 
+                player.on_ground = False
             if player.on_ceiling and player.direction.y > 0: 
-                player.on_ceiling = False 
+                player.on_ceiling = False
 
         if self.button_onoff_infos or self.button_onoff_gepesz:
             if self.button_onoff_infos or self.button_onoff_gepesz:
