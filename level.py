@@ -294,6 +294,7 @@ class Level:
                         player.rect.left = sprite.rect.right # type: ignore
                     elif player.direction.x > 0:
                         player.rect.right = sprite.rect.left # type: ignore
+
     def map_load(self):
         self.background_image = "graphics/map/terem_hatter.png"
         self.timer.reset_timer()
@@ -384,6 +385,7 @@ class Level:
             self.enemy.kill()
             self.infos_finished = False
             self.gepesz_finished = False
+
     def vertical_collision(self):
         player_list: List[Gepesz|Infos] = self.players.sprites() # type: ignore
         for player in player_list:
@@ -442,8 +444,6 @@ class Level:
                 self.enemy.kill()
                 self.scorer.add_score(50)
 
-        # player_list: List[Gepesz|Infos] = self.players.sprites() # type: ignore
-        # for player in player_list:
             if player.on_ground and player.direction.y < 0 or player.direction.y > 1:
                 player.on_ground = False
             if player.on_ceiling and player.direction.y > 0:

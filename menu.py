@@ -32,7 +32,6 @@ class Menu:
         self.screen = screen
         self.all_buttons: pygame.sprite.Group[Sprite] = pygame.sprite.Group() # type: ignore
 
-
     def checkcollision(self):
         button_list: list[Menu_Buttons] = self.all_buttons.sprites() # type: ignore
         for button in button_list:

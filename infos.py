@@ -1,6 +1,5 @@
 import pygame
 
-
 class Infos(pygame.sprite.Sprite):
     def __init__(self, pos: tuple[int, int]) -> None:
         super().__init__()
