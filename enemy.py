@@ -9,6 +9,9 @@ class Enemy(pygame.sprite.Sprite):
         self.speed: int = 2
         self.original_pos: tuple[int, int] = (0, 0)
 
+    def draw(self, screen: pygame.Surface):
+        screen.blit(self.image, self.rect)
+
     def change_image(self, facing_left: bool):
         if facing_left is False:
             self.image = pygame.image.load("graphics/characters/enemy_uveggel.png").convert_alpha()

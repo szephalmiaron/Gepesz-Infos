@@ -17,9 +17,9 @@ class Gepesz(pygame.sprite.Sprite):
         self.on_left: bool = False
         self.on_right: bool = False
         self.original_pos: tuple[int, int] = (0, 0)
-        
+
     def get_input(self) -> None:
-        keys: pygame.key.ScancodeWrapper = pygame.key.get_pressed() 
+        keys: pygame.key.ScancodeWrapper = pygame.key.get_pressed()
         image_path = "graphics/characters/gepesz/gepeszanimacio2(default).png"
         if keys[pygame.K_d]:
             self.direction.x = 1

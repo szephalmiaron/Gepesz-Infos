@@ -4,8 +4,8 @@ from settings import WIDTH, HEIGHT, level_map_1, level_choice
 from player import Gepesz
 from infos import Infos
 from enemy import Enemy
-from events import *
-from timer import *
+from events import event_death, event_home, event_pause, event_restart, event_unpause
+from timer import Scorer, Timer
 
 
 pygame.init()
@@ -14,7 +14,7 @@ pygame.font.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 
-infos = Infos((int(WIDTH / 2), int(HEIGHT / 2 - 50))) 
+infos = Infos((int(WIDTH / 2), int(HEIGHT / 2 - 50)))
 gepesz = Gepesz((int(WIDTH / 2), int(HEIGHT / 2)))
 enemy = Enemy((int(WIDTH / 2), int(HEIGHT / 2)))
 game_font: pygame.font.Font = pygame.font.Font(None, 60)
@@ -32,22 +32,22 @@ scorer = Scorer(screen, game_font, (300, 100, 200, 100))
 level = Level(screen, infos, gepesz, enemy, game_font, timer, scorer)
 
 background: pygame.Surface = pygame.image.load(level.background_image).convert()
-past_level = level.current_level 
+past_level = level.current_level
 
 running = True
 paused: bool = False
 alive: bool = True
 iterrated: bool = False
 while running:
-    if level.current_level != past_level:  
+    if level.current_level != past_level:
         background = pygame.image.load(level.background_image).convert()
-        past_level = level.current_level 
+        past_level = level.current_level
     level.screen_fill(screen, background)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:  
+        elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
             if not paused:
                 paused = True
                 iterrated = True
@@ -64,11 +64,11 @@ while running:
         if event.type == event_death:
             alive = False
         if event.type == event_home:
-            paused = False    
+            paused = False
             alive = True
             level.home()
-    
-    
+
+
     if level.current_level == level_choice:
         screen.blit((game_font.render("A szóköz lenyomásával be tudsz menni egy ajtón", True, (0, 0, 0))), (50, 600, 50, 50))
     if level.current_level == level_map_1:

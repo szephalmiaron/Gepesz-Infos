@@ -74,9 +74,9 @@ class Switch(pygame.sprite.Sprite):
         super().__init__()
         self.image = pygame.image.load(switch_pic)
         self.rect = self.image.get_rect(topleft=pos)
-    def update_image(self, switch_on):
+    def update_image(self, switch_on: bool):
         if switch_on:
-            self.image = pygame.image.load("graphics/temp/switch_on.png")  
+            self.image = pygame.image.load("graphics/temp/switch_on.png")
         else:
             self.image = pygame.image.load("graphics/temp/switch_off.png")
 
