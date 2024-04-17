@@ -4,7 +4,7 @@ from tiles import Button
 from events import *
 
 class Menu_Buttons(pygame.sprite.Sprite):
-    def __init__(self, pos: tuple[int, int], buttontype):
+    def __init__(self, pos: tuple[int, int], buttontype: str):
         super().__init__()
         if buttontype == "home":
             self.image = pygame.image.load("graphics/buttons/homgomboooo.png").convert_alpha()
@@ -26,11 +26,11 @@ class Menu:
     POS_2_4 = (HEIGHT/5)*2
     POS_3_4 = (HEIGHT/5)*3
     POS_4_4 = (HEIGHT/5)*4
-    background_image = "graphics\map\crackhead.png"
+    background_image = "graphics/map/crackhead.png"
 
-    def __init__(self, screen):
+    def __init__(self, screen: pygame.Surface):
         self.screen = screen
-        self.all_buttons: list[Button] = pygame.sprite.Group()
+        self.all_buttons: list[Button] = pygame.sprite.Group() # type: ignore
 
 
     def checkcollision(self):
