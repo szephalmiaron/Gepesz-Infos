@@ -63,8 +63,8 @@ while running:
         screen.blit((game_font.render("A szóköz lenyomásával be tudsz menni egy ajtón", True, (0, 0, 0))), (50, 600, 50, 50))
     if level.current_level == level_map_1:
         screen.blit((game_font_2.render("A gombbal és a kapcsolóval irányítható a lift", True, (0, 0, 0))), (900, 800, 50, 50))
-        screen.blit((game_font_2.render("Ha oldalról nekedjön az ellenség akkor, meghalsz", True, (0, 0, 0))), (300, 370, 50, 50))
-        screen.blit((game_font_2.render("Ha ráugrassz a fejére, akkor az ellenség hal meg", True, (0, 0, 0))), (300, 400))
+        screen.blit((game_font_2.render("Ha oldalról neked jön az ellenség, akkor meghalsz", True, (0, 0, 0))), (300, 370, 50, 50))
+        screen.blit((game_font_2.render("Ha ráugrasz a fejére, akkor az ellenség hal meg", True, (0, 0, 0))), (300, 400))
     if paused:
         level.pausemenu()
     elif not alive:
