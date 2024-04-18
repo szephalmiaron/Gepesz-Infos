@@ -11,7 +11,7 @@ class Timer():
     def time_print(self):
         self.current_time += self.clock.get_time() / 1000
         self.surface.blit((self.font.render(f"Eltelt idő: {int(self.current_time)}", True, (0, 0, 0))), self.timer_rect)
-    
+
     def reset_timer(self):
         self.current_time -= self.current_time
 
@@ -24,7 +24,7 @@ class Scorer():
         self.font = font
         self.scorer_rect = rect
         self.score = 0
-    
+
     def add_score(self, amount: int):
         self.score += amount
 

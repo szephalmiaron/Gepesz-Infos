@@ -150,7 +150,7 @@ level_choice: list[str] = [
     "S                                                          S",
     "S                                                          S",
     "S                                                          S",
-    "S                                     B         I          S",
+    "S                                               I          S",
     "SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS   SSSS",
     "S                                                          S",
     "S                                                          S",
