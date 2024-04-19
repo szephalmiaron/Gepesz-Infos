@@ -158,6 +158,7 @@ class Level:
         self.switch_on = False
         self.switch_pic = "graphics/temp/switch_off.png"
         self.timer.reset_timer()
+        self.setup_level(self.current_level)
 
     def home(self):
         self.setup_level(level_choice)
