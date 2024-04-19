@@ -166,7 +166,7 @@ class Level:
         self.switch_on = False
         self.switch_pic = "graphics/temp/switch_off.png"
         self.current_level = level_choice
-        self.enemy.kill()
+        self.enemy.rect.x = 10000
         self.infos_finished = False
         self.gepesz_finished = False
 
@@ -382,7 +382,7 @@ class Level:
             self.switch_on = False
             self.switch_pic = "graphics/temp/switch_off.png"
             self.current_level = level_choice
-            self.enemy.kill()
+            self.enemy.rect.x = 10000
             self.infos_finished = False
             self.gepesz_finished = False
 
@@ -441,7 +441,7 @@ class Level:
                         player.direction.y = 0
                         player.on_ceiling = True
             if self.enemy.rect.colliderect(player.rect):
-                self.enemy.kill()
+                self.enemy.rect.x = 10000
                 self.scorer.add_score(50)
 
             if player.on_ground and player.direction.y < 0 or player.direction.y > 1:
